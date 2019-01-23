@@ -1,0 +1,31 @@
+apply plugin: 'groovy'
+apply plugin: 'maven'
+
+def MAVEN_LOCAL_PATH = uri('../local_repo')
+def ARTIFACT_ID = 'moduel-component'
+def VERSION_NAME = '1.3.3'
+def GROUP_ID = 'com.build.gradle'
+
+
+dependencies {
+    compile 'com.android.tools.build:gradle:3.2.1'
+    compile group: 'org.javassist', name: 'javassist', version: '3.23.1-GA'
+    //gradle sdk
+    compile gradleApi()
+    //groovy sdk
+    compile localGroovy()
+    testCompile deps.junit
+}
+
+uploadArchives() {
+    repositories {
+        mavenDeployer {
+            repository(url: MAVEN_LOCAL_PATH)
+            pom.project {
+                groupId GROUP_ID
+                artifactId ARTIFACT_ID
+                version VERSION_NAME
+            }
+        }
+    }
+}

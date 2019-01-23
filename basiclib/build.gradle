@@ -1,0 +1,79 @@
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
+
+android {
+    compileSdkVersion build_versions.target_sdk
+    defaultConfig {
+        minSdkVersion build_versions.min_sdk
+        targetSdkVersion build_versions.target_sdk
+        versionCode 1
+        versionName "1.0"
+        multiDexEnabled true
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        javaCompileOptions { annotationProcessorOptions { includeCompileClasspath = true } }
+    }
+    dataBinding {
+        enabled = true
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    api project(':basicres')
+    api deps.kotlin.stdlib
+    api deps.kotlin.coroutines
+    api deps.kotlin.coroutines_android
+    api deps.coreKtx
+
+    api deps.constraint_layout
+    api deps.support.compat
+    api deps.support.recyclerview
+    api deps.support.cardview
+    api deps.support.design
+
+    api deps.lifecycle.runtime
+    api deps.lifecycle.extensions
+    api deps.lifecycle.livedata
+    api deps.lifecycle.viewmodel
+    api deps.lifecycle.reactivestreams
+
+    kapt deps.room.compiler
+    api deps.room.runtime
+
+    api deps.retrofit.runtime
+    api deps.retrofit.gson
+    api deps.retrofit.rx_adapter
+    api deps.retrofit.url_manager
+
+    api deps.rx.core
+    api deps.rx.android
+    api deps.rx.kotlin
+    api deps.rx.permissions
+
+    api deps.timber
+
+    kapt deps.dagger.android_support_compiler
+    kapt deps.dagger.compiler
+    api deps.dagger.runtime
+    api deps.dagger.android
+    api deps.dagger.android_support
+
+    api deps.glide.runtime
+    kapt deps.glide.compiler
+
+    kapt deps.data.service
+    api deps.data.service
+
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'com.android.support.test:runner:1.0.2'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+}
