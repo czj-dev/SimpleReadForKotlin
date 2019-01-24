@@ -239,7 +239,7 @@ def addRepos(RepositoryHandler handler) {
     handler.google()
     handler.jcenter()
     handler.mavenCentral()
-    handler.maven { url uri('./repositories') }
+    handler.maven { url uri('./local_repo') }
     handler.maven { url "https://jitpack.io" }
     handler.flatDir {
         dirs '../componentrelease' //this way we can find the .aar file in  folder

@@ -53,7 +53,7 @@ class NetworkManager @Inject constructor() : GlobalHttpHandler {
     private fun <T : Any> createWrapperService(serviceClass: Class<T>): T {
         // 通过二次代理，对 Retrofit 代理方法的调用包进新的 Observable 里在 io 线程执行。
         return Proxy.newProxyInstance(serviceClass.classLoader,
-                arrayOf<Class<*>>(serviceClass), InvocationHandler { proxy, method, args ->
+                arrayOf<Class<*>>(serviceClass), InvocationHandler { _, method, args ->
             if (method.returnType == Observable::class.java) {
                 // 如果方法返回值是 Observable 的话，则包一层再返回
                 return@InvocationHandler Observable.defer {

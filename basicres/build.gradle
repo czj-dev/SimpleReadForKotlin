@@ -22,6 +22,11 @@ android {
 }
 
 dependencies {
+    api deps.constraint_layout
+    api deps.support.compat
+    api deps.support.recyclerview
+    api deps.support.cardview
+    api deps.support.design
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'

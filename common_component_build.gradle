@@ -1,4 +1,4 @@
-apply plugin: 'com.android.application'
+apply plugin: 'com.gradle.component'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
@@ -7,14 +7,15 @@ apply plugin: 'kotlin-kapt'
 android {
     compileSdkVersion build_versions.target_sdk
     defaultConfig {
-        applicationId "com.rank.simplereadforkotlin"
         minSdkVersion build_versions.min_sdk
         targetSdkVersion build_versions.target_sdk
         versionCode 1
         versionName "1.0"
         multiDexEnabled true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-        javaCompileOptions { annotationProcessorOptions { includeCompileClasspath = true } }
+        javaCompileOptions { annotationProcessorOptions {
+            arguments = [AROUTER_MODULE_NAME: project.getName()]
+            includeCompileClasspath = true } }
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8

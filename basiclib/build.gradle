@@ -34,11 +34,7 @@ dependencies {
     api deps.kotlin.coroutines_android
     api deps.coreKtx
 
-    api deps.constraint_layout
-    api deps.support.compat
-    api deps.support.recyclerview
-    api deps.support.cardview
-    api deps.support.design
+
 
     api deps.lifecycle.runtime
     api deps.lifecycle.extensions
