@@ -5,6 +5,8 @@ import android.app.Application
 import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.multidex.MultiDex
+import com.alibaba.android.arouter.launcher.ARouter
+import com.rank.basiclib.BuildConfig
 import com.rank.basiclib.di.*
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasActivityInjector
@@ -35,6 +37,7 @@ open class BaseApplication : Application(), HasActivityInjector {
     override fun attachBaseContext(base: Context?) {
         super.attachBaseContext(base)
         MultiDex.install(base)
+        //通过 ServiceLoader 来装载各个 Module 的 AppLifecycle
         appLifecycle = ServiceLoader.load(AppLifecycle::class.java)
         for (appLifecycleObservable in appLifecycle) {
             appLifecycleObservable.attachBaseContext(this)
@@ -51,14 +54,29 @@ open class BaseApplication : Application(), HasActivityInjector {
 
             appLifecycleObservable.onCreate(this)
 
+            //获取当前 Module 中注册的 viewModel
             val moduleViewModels = appLifecycleObservable.returnViewModels()
             this.viewModels.putAll(moduleViewModels)
 
+            //获取当前 Module 中注册的 Activity
             val moduleViews = appLifecycleObservable.returnViews()
             viewInjectUtils.putAll(moduleViews)
         }
+
+        //将注入的 ViewModel 集中放置到 Factory 中
         environmentModule.factory = AndroidViewModelFactory(viewModels)
+
+        //将注入的 Activity 几种放置等待被调起
         dispatchingAndroidInjector = viewInjectUtils.get()
+        initARouter()
+    }
+
+    private fun initARouter() {
+        if (BuildConfig.DEBUG) {
+            ARouter.openLog()
+            ARouter.openDebug()
+        }
+        ARouter.init(this)
     }
 
     override fun activityInjector() = dispatchingAndroidInjector

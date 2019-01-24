@@ -1,9 +1,14 @@
-apply plugin: 'com.android.application'
+apply plugin: 'com.gradle.component'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 
-
+kapt {
+    arguments {
+        arg("AROUTER_MODULE_NAME", project.getName())
+        arg("AROUTER_GENERATE_DOC", "enable")
+    }
+}
 android {
     compileSdkVersion build_versions.target_sdk
     defaultConfig {
@@ -14,7 +19,11 @@ android {
         versionName "1.0"
         multiDexEnabled true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-        javaCompileOptions { annotationProcessorOptions { includeCompileClasspath = true } }
+        javaCompileOptions {
+            annotationProcessorOptions {
+                includeCompileClasspath = true
+            }
+        }
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -38,9 +47,12 @@ dependencies {
     kapt deps.dagger.android_support_compiler
     kapt deps.dagger.compiler
     kapt deps.data.service
-    api deps.data.service
-
+    kapt deps.router.compiler
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+}
+combuild {
+    applicationName = 'com.rank.basiclib.application.BaseApplication'
+    isRegisterCompoAuto = true
 }

@@ -34,13 +34,9 @@ dependencies {
     api deps.kotlin.coroutines_android
     api deps.coreKtx
 
-
-
     api deps.lifecycle.runtime
     api deps.lifecycle.extensions
-    api deps.lifecycle.livedata
     api deps.lifecycle.viewmodel
-    api deps.lifecycle.reactivestreams
 
     kapt deps.room.compiler
     api deps.room.runtime
@@ -55,6 +51,11 @@ dependencies {
     api deps.rx.kotlin
     api deps.rx.permissions
 
+    api deps.rx.lifecycle_core
+    api deps.rx.lifecycle_android
+    api deps.rx.lifecycle_android_provider
+    api deps.rx.lifecycle_kotlin
+
     api deps.timber
 
     kapt deps.dagger.android_support_compiler
@@ -68,6 +69,10 @@ dependencies {
 
     kapt deps.data.service
     api deps.data.service
+
+    api deps.router.api
+
+    api deps.componentlib
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'

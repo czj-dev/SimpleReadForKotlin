@@ -1,4 +1,4 @@
-package com.rank.gank.view_model
+package com.rank.simplereadforkotlin.viewmodel
 
 import android.app.Application
 import androidx.core.util.arrayMapOf
@@ -13,8 +13,8 @@ import javax.inject.Inject
  *     desc  :
  * </pre>
  */
-class GankActivityViewModel @Inject constructor(application: Application) : AndroidViewModel(application) {
+class MainActivityViewModel @Inject constructor(application: Application) : AndroidViewModel(application) {
 
 
-    fun hello() = arrayMapOf(Pair("Hello", "Gank"))
+    fun hello() = arrayMapOf(Pair("Hello", "Main"))
 }

@@ -2,7 +2,7 @@ package com.rank.simplereadforkotlin.di
 
 import androidx.lifecycle.ViewModel
 import com.rank.basiclib.di.ViewModelKey
-import com.rank.simplereadforkotlin.view_model.MainActivityViewModel
+import com.rank.simplereadforkotlin.viewmodel.MainActivityViewModel
 import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap

@@ -230,8 +230,8 @@ class ComCodeTransform extends Transform {
     private static boolean isActivator(CtClass ctClass) {
         try {
             for (CtClass ctClassInter : ctClass.getInterfaces()) {
-                if ("com.luojilab.component.componentlib.applicationlike.IApplicationLike".equals(ctClassInter.name)) {
-                    boolean hasManualNotation = ctClass.hasAnnotation(Class.forName("com.luojilab.component.componentlib.applicationlike.RegisterCompManual"))
+                if ("com.rank.service.application.IApplicationLike".equals(ctClassInter.name)) {
+                    boolean hasManualNotation = ctClass.hasAnnotation(Class.forName("com.rank.service.application.RegisterCompManual"))
 //                    return true
                     System.out.println(">>>> " + ctClass + " manual register?" + hasManualNotation)
                     return !hasManualNotation

@@ -2,15 +2,17 @@ package com.rank.gank.ui
 
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
+import com.alibaba.android.arouter.facade.annotation.Route
 import com.google.android.material.snackbar.Snackbar
 import com.google.gson.Gson
 import com.rank.basiclib.di.Injectable
 import com.rank.basiclib.ext.CompatActivity
 import com.rank.gank.R
-import com.rank.gank.view_model.GankActivityViewModel
+import com.rank.gank.viewmodel.GankActivityViewModel
 import javax.inject.Inject
 
-class GankActivity : CompatActivity<com.rank.gank.databinding.ActivityGankBinding>() ,Injectable{
+@Route(path = "/gank/home")
+class GankActivity : CompatActivity<com.rank.gank.databinding.ActivityGankBinding>(), Injectable {
 
     override val layoutId = R.layout.activity_gank
 

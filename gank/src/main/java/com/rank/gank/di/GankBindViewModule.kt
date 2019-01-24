@@ -2,7 +2,7 @@ package com.rank.gank.di
 
 import androidx.lifecycle.ViewModel
 import com.rank.basiclib.di.ViewModelKey
-import com.rank.gank.view_model.GankActivityViewModel
+import com.rank.gank.viewmodel.GankActivityViewModel
 import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap

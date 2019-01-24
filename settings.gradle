@@ -1,1 +1,1 @@
-include ':app', ':basiclib', ':basicres', ':component', ':gank'
+include ':app', ':basiclib', ':basicres', ':component', ':gank', ':service'
