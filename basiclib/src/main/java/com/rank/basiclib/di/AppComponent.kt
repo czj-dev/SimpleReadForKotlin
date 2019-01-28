@@ -4,6 +4,7 @@ import android.app.Application
 import androidx.lifecycle.ViewModelProvider
 import com.google.gson.Gson
 import com.rank.basiclib.application.BaseApplication
+import com.rank.basiclib.http.NetworkManager
 import dagger.BindsInstance
 import dagger.Component
 import javax.inject.Singleton
@@ -26,6 +27,8 @@ import javax.inject.Singleton
 interface AppComponent {
 
     fun factory(): ViewModelProvider.Factory
+
+    fun networkManager(): NetworkManager
 
     fun application(): Application
 

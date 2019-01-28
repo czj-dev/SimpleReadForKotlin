@@ -43,7 +43,7 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-    implementation project(":basiclib")
+    implementation project(":service")
     kapt deps.dagger.android_support_compiler
     kapt deps.dagger.compiler
     kapt deps.data.service

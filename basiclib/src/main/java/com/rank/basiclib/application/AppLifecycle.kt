@@ -1,6 +1,5 @@
 package com.rank.basiclib.application
 
-import android.app.Activity
 import android.content.Context
 import androidx.annotation.NonNull
 import androidx.lifecycle.ViewModel
@@ -25,5 +24,8 @@ interface AppLifecycle {
 
     fun returnViewModels(): Map<Class<out ViewModel>, @JvmSuppressWildcards Provider<ViewModel>>
 
-    fun returnViews(): Map<Class<out Activity>, Provider<AndroidInjector.Factory<out Activity>>>
+    fun classKeyedInjectorFactories(): Map<Class<*>, Provider<AndroidInjector.Factory<*>>>
+
+    fun stringKeyedInjectorFactories(): Map<String, Provider<AndroidInjector.Factory<*>>>
+
 }

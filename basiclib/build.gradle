@@ -28,7 +28,12 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    api project(':basicres')
+    api deps.constraint_layout
+    api deps.support.compat
+    api deps.support.recyclerview
+    api deps.support.cardview
+    api deps.support.design
+
     api deps.kotlin.stdlib
     api deps.kotlin.coroutines
     api deps.kotlin.coroutines_android

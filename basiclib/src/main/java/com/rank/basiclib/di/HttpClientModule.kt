@@ -1,7 +1,6 @@
 package com.rank.basiclib.di
 
 import com.rank.basiclib.log.GlobalHttpHandler
-import com.rank.basiclib.log.RequestInterceptor
 import dagger.Module
 import dagger.Provides
 import okhttp3.Interceptor
@@ -21,23 +20,13 @@ import javax.inject.Singleton
  * </pre>
  */
 @Module()
- class HttpClientModule {
+class HttpClientModule {
 
     companion object {
         const val TIME_OUT = 30L
-        const val BASE_URL = ""
+        const val BASE_URL = "http://gank.io/api/"
     }
 
-    @Provides
-    @Singleton
-    fun providerRetrofit(okHttpClient: OkHttpClient): Retrofit {
-        val builder = Retrofit.Builder()
-        builder.addConverterFactory(GsonConverterFactory.create())
-                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                .client(okHttpClient)
-                .baseUrl(BASE_URL)
-        return builder.build()
-    }
 
     @Provides
     @Singleton
@@ -53,13 +42,15 @@ import javax.inject.Singleton
         return client.build()
     }
 
-    /**
-     * 提供OkHttp拦截器
-     */
     @Provides
     @Singleton
-    fun providerInterceptor(handler: GlobalHttpHandler): ArrayList<Interceptor> {
-        return arrayListOf(RequestInterceptor(handler))
+    fun providerRetrofit(okHttpClient: OkHttpClient): Retrofit {
+        val builder = Retrofit.Builder()
+        builder.addConverterFactory(GsonConverterFactory.create())
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                .client(okHttpClient)
+                .baseUrl(BASE_URL)
+        return builder.build()
     }
 
 }

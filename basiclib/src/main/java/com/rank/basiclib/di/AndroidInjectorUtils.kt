@@ -13,15 +13,18 @@ import javax.inject.Provider
  *     desc  :
  * </pre>
  */
-class AndroidInjectorUtils<T> {
+class AndroidInjectorUtils {
 
-    private val injectorViews: HashMap<Class<out T>, Provider<AndroidInjector.Factory<out T>>> = HashMap()
+    private val classKeyedInjectorFactories: HashMap<Class<*>, Provider<AndroidInjector.Factory<*>>> = HashMap()
+    private val stringKeyedInjectorFactories: HashMap<String, Provider<AndroidInjector.Factory<*>>> = HashMap()
 
-    fun putAll(map:Map<Class<out T>, Provider<AndroidInjector.Factory<out T>>>) {
-        injectorViews.putAll(map)
+    fun putAll(map: Map<Class<*>, Provider<AndroidInjector.Factory<*>>>, stringMap: Map<String, Provider<AndroidInjector.Factory<*>>>) {
+        classKeyedInjectorFactories.putAll(map)
+        stringKeyedInjectorFactories.putAll(stringMap)
     }
 
-    fun get(): DispatchingAndroidInjector<T> {
-        return DispatchingAndroidInjector_Factory.newDispatchingAndroidInjector(injectorViews)
+
+    fun <T> get(): DispatchingAndroidInjector<T> {
+        return DispatchingAndroidInjector_Factory.newDispatchingAndroidInjector(classKeyedInjectorFactories, stringKeyedInjectorFactories)
     }
 }

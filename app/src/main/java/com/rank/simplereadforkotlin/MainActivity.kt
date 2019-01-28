@@ -1,5 +1,6 @@
 package com.rank.simplereadforkotlin
 
+import android.annotation.SuppressLint
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import com.alibaba.android.arouter.facade.annotation.Route
@@ -32,6 +33,7 @@ class MainActivity : CompatActivity<ActivityMainBinding>(), Injectable {
     override fun initViews() {
     }
 
+    @SuppressLint("CheckResult")
     override fun onResume() {
         super.onResume()
         Snackbar.make(binding.root, gson.toJson(viewModel.hello()), Snackbar.LENGTH_LONG).show()
@@ -39,5 +41,9 @@ class MainActivity : CompatActivity<ActivityMainBinding>(), Injectable {
             delay(1000)
             ARouter.getInstance().build("/gank/home").navigation()
         }
+
+        viewModel.queryPhoto().subscribe({
+            Snackbar.make(binding.root, it.desc, Snackbar.LENGTH_LONG).show()
+        })
     }
 }

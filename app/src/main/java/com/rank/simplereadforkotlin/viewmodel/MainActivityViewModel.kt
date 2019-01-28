@@ -3,6 +3,7 @@ package com.rank.simplereadforkotlin.viewmodel
 import android.app.Application
 import androidx.core.util.arrayMapOf
 import androidx.lifecycle.AndroidViewModel
+import com.rank.simplereadforkotlin.db.MainRepository
 import javax.inject.Inject
 
 /**
@@ -13,8 +14,12 @@ import javax.inject.Inject
  *     desc  :
  * </pre>
  */
-class MainActivityViewModel @Inject constructor(application: Application) : AndroidViewModel(application) {
+class MainActivityViewModel @Inject constructor(application: Application, private val mainRepository: MainRepository) : AndroidViewModel(application) {
 
 
     fun hello() = arrayMapOf(Pair("Hello", "Main"))
+
+
+    fun queryPhoto() = mainRepository.obtainLastPhoto()
+
 }

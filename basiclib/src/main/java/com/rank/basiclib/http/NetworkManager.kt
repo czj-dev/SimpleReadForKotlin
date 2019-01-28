@@ -24,10 +24,12 @@ import javax.inject.Singleton
  * </pre>
  */
 @Singleton
-class NetworkManager @Inject constructor() : GlobalHttpHandler {
+class NetworkManager
+@Inject constructor()
+    : GlobalHttpHandler {
 
     @Inject
-    lateinit var retrofit: Lazy<Retrofit>
+    lateinit var retrofit: Retrofit
 
     private val mRetrofitServiceCache: LruCache<String, Any> = LruCache(1024 * 5)
 
@@ -50,24 +52,30 @@ class NetworkManager @Inject constructor() : GlobalHttpHandler {
      * @param <T>          ApiService class
      * @return ApiService
     </T> */
+    @Suppress("UNCHECKED_CAST")
     private fun <T : Any> createWrapperService(serviceClass: Class<T>): T {
         // 通过二次代理，对 Retrofit 代理方法的调用包进新的 Observable 里在 io 线程执行。
         return Proxy.newProxyInstance(serviceClass.classLoader,
-                arrayOf<Class<*>>(serviceClass), InvocationHandler { _, method, args ->
-            if (method.returnType == Observable::class.java) {
-                // 如果方法返回值是 Observable 的话，则包一层再返回
-                return@InvocationHandler Observable.defer {
-                    val service = getRetrofitService(serviceClass)
-                    // 执行真正的 Retrofit 动态代理的方法
-                    (getRetrofitMethod(service!!, method)
-                            .invoke(service, *args) as Observable<*>)
-                            .subscribeOn(Schedulers.io())
-                }.subscribeOn(Schedulers.single())
+                arrayOf(serviceClass), object : InvocationHandler {
+            override fun invoke(proxy: Any, method: Method, args: Array<out Any>?): Any {
+
+                if (method.returnType == Observable::class.java) {
+                    return Observable.defer {
+                        val service = getRetrofitService(serviceClass)
+                        // 执行真正的 Retrofit 动态代理的方法
+                        (getRetrofitMethod(service, method)
+                                .invoke(service, *getParams(args)) as Observable<*>)
+                                .subscribeOn(Schedulers.io())
+                    }.subscribeOn(Schedulers.single())
+                }
+                val service = getRetrofitService(serviceClass)
+                return getRetrofitMethod(service, method).invoke(service, *getParams(args))
             }
-            // 返回值不是 Observable 的话不处理
-            val service = getRetrofitService(serviceClass)
-            getRetrofitMethod(service!!, method).invoke(service, *args)
         }) as T
+    }
+
+    private fun getParams(args: Array<out Any>?): Array<out Any?> {
+        return args ?: arrayOfNulls<Any>(0)
     }
 
     /**
@@ -77,7 +85,7 @@ class NetworkManager @Inject constructor() : GlobalHttpHandler {
      * @param <T>          ApiService class
      * @return ApiService
     </T> */
-    private fun <T> getRetrofitService(serviceClass: Class<T>): T? {
+    private fun <T> getRetrofitService(serviceClass: Class<T>): T {
         /*     if (mRetrofitServiceCache == null) {
                  mRetrofitServiceCache = mCachefactory.build(CacheType.RETROFIT_SERVICE_CACHE)
              }*/
@@ -85,7 +93,7 @@ class NetworkManager @Inject constructor() : GlobalHttpHandler {
                 "Cannot return null from a Cache.Factory#build(int) method")
         var retrofitService: T = mRetrofitServiceCache.get(serviceClass.canonicalName) as T
         if (retrofitService == null) {
-            retrofitService = retrofit.value.create(serviceClass)
+            retrofitService = retrofit.create(serviceClass)
             mRetrofitServiceCache.put(serviceClass.canonicalName, retrofitService)
         }
         return retrofitService
@@ -93,7 +101,7 @@ class NetworkManager @Inject constructor() : GlobalHttpHandler {
 
     @Throws(NoSuchMethodException::class)
     private fun <T : Any> getRetrofitMethod(service: T, method: Method): Method {
-        return service.javaClass.getMethod(method.name, *method.parameterTypes)
+        return service::class.java.getMethod(method.name, *method.parameterTypes)
     }
 
     override fun onHttpResultResponse(httpResult: String?, chain: Interceptor.Chain, response: Response): Response {

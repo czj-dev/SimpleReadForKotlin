@@ -1,6 +1,5 @@
 package com.rank.gank.di;
 
-import android.app.Activity;
 import android.content.Context;
 
 import com.google.auto.service.AutoService;
@@ -33,7 +32,10 @@ public class GankAppLifecycleImpl implements AppLifecycle {
     Map<Class<? extends ViewModel>, Provider<ViewModel>> viewModels;
 
     @Inject
-    Map<Class<? extends Activity>, Provider<AndroidInjector.Factory<? extends Activity>>> activitys;
+    Map<Class<?>, Provider<AndroidInjector.Factory<?>>> classKeyedInjectorFactories;
+
+    @Inject
+    Map<String, Provider<AndroidInjector.Factory<?>>> stringKeyedInjectorFactories;
 
     @Override
     public void attachBaseContext(@NonNull @NotNull Context base) {
@@ -56,10 +58,15 @@ public class GankAppLifecycleImpl implements AppLifecycle {
         return viewModels;
     }
 
+    @NotNull
+    @Override
+    public Map<Class<?>, Provider<AndroidInjector.Factory<?>>> classKeyedInjectorFactories() {
+        return classKeyedInjectorFactories;
+    }
 
     @NotNull
     @Override
-    public Map<Class<? extends Activity>, Provider<AndroidInjector.Factory<? extends Activity>>> returnViews() {
-        return activitys;
+    public Map<String, Provider<AndroidInjector.Factory<?>>> stringKeyedInjectorFactories() {
+        return stringKeyedInjectorFactories;
     }
 }
