@@ -15,6 +15,6 @@ import retrofit2.http.GET
  */
 interface MainService {
 
-    @GET("data/福利/1/1")
+    @GET("data")
     fun queryLastPhoto(): Observable<GankResult<List<GirlPhoto>>>
 }

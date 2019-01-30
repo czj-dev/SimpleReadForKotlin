@@ -10,13 +10,16 @@ import com.alibaba.android.arouter.launcher.ARouter
 import com.rank.basiclib.BuildConfig
 import com.rank.basiclib.di.*
 import com.rank.basiclib.log.GlobalHttpHandler
+import com.rank.basiclib.utils.ViewUtils
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasActivityInjector
 import dagger.android.support.HasSupportFragmentInjector
 import okhttp3.Interceptor
 import okhttp3.Request
 import okhttp3.Response
+import timber.log.Timber
 import java.util.*
+import javax.inject.Inject
 import javax.inject.Provider
 import kotlin.collections.HashMap
 
@@ -38,6 +41,10 @@ open class BaseApplication : Application(), HasActivityInjector, HasSupportFragm
 
     private lateinit var fragmentDispatchingAndroidInjector: DispatchingAndroidInjector<Fragment>
 
+
+    @Inject
+    lateinit var activityLifecycleCallbacks: ActivityLifecycleCallbacks
+
     lateinit var appComponent: AppComponent
 
     override fun attachBaseContext(base: Context?) {
@@ -53,7 +60,7 @@ open class BaseApplication : Application(), HasActivityInjector, HasSupportFragm
     override fun onCreate() {
         super.onCreate()
         val environmentModule = EnvironmentModule()
-        environmentModule.handler=object :GlobalHttpHandler{
+        environmentModule.handler = object : GlobalHttpHandler {
             override fun onHttpResultResponse(httpResult: String?, chain: Interceptor.Chain, response: Response): Response {
                 return response
             }
@@ -88,6 +95,10 @@ open class BaseApplication : Application(), HasActivityInjector, HasSupportFragm
         fragmentDispatchingAndroidInjector = injectUtils.get()
 
         initARouter()
+        registerActivityLifecycleCallbacks(activityLifecycleCallbacks)
+        ViewUtils.app = this
+        //Timber初始化
+        Timber.plant(Timber.DebugTree())
     }
 
     private fun initARouter() {

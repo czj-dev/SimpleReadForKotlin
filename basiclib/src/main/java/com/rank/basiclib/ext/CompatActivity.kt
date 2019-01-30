@@ -5,6 +5,8 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
+import com.noober.background.BackgroundLibrary
+
 
 /**
  * <pre>
@@ -23,6 +25,7 @@ abstract class CompatActivity<B : ViewDataBinding> : AppCompatActivity() {
     abstract val layoutId: Int
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        BackgroundLibrary.inject(this)
         super.onCreate(savedInstanceState)
         initViewBinding()
         initViews()

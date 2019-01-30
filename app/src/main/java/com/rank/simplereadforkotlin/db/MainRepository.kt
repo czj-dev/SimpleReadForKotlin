@@ -1,5 +1,6 @@
 package com.rank.simplereadforkotlin.db
 
+import com.rank.basiclib.error.shelling
 import com.rank.basiclib.http.NetworkManager
 import com.rank.simplereadforkotlin.entity.GirlPhoto
 import com.rank.simplereadforkotlin.entity.api.MainService
@@ -23,9 +24,8 @@ class MainRepository @Inject constructor(private val networkManager: NetworkMana
                 .load(MainService::class.java)
                 .queryLastPhoto()
                 .observeOn(AndroidSchedulers.mainThread())
-                .map { data ->
-                    data.results[0]
-                }
+                .shelling()
+                .map { it[0] }
     }
 
 }

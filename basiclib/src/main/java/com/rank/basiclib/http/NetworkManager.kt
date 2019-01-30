@@ -86,9 +86,6 @@ class NetworkManager
      * @return ApiService
     </T> */
     private fun <T> getRetrofitService(serviceClass: Class<T>): T {
-        /*     if (mRetrofitServiceCache == null) {
-                 mRetrofitServiceCache = mCachefactory.build(CacheType.RETROFIT_SERVICE_CACHE)
-             }*/
         Preconditions.checkNotNull(mRetrofitServiceCache,
                 "Cannot return null from a Cache.Factory#build(int) method")
         var retrofitService: T = mRetrofitServiceCache.get(serviceClass.canonicalName) as T

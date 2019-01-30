@@ -1,5 +1,8 @@
 package com.rank.basiclib.ext
 
+import com.rank.basiclib.utils.ViewUtils
+
+
 /**
  * <pre>
  *     author: ChenZhaoJun
@@ -8,3 +11,4 @@ package com.rank.basiclib.ext
  *     desc  :
  * </pre>
  */
+fun application() = ViewUtils.app

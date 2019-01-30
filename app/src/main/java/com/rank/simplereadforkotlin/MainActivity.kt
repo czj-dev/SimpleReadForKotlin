@@ -11,10 +11,12 @@ import com.rank.basiclib.di.Injectable
 import com.rank.basiclib.ext.CompatActivity
 import com.rank.simplereadforkotlin.databinding.ActivityMainBinding
 import com.rank.simplereadforkotlin.viewmodel.MainActivityViewModel
+import com.trello.rxlifecycle3.android.lifecycle.kotlin.bindToLifecycle
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+
 
 @Route(path = "/app/home")
 class MainActivity : CompatActivity<ActivityMainBinding>(), Injectable {
@@ -31,19 +33,22 @@ class MainActivity : CompatActivity<ActivityMainBinding>(), Injectable {
     private val viewModel by lazy { ViewModelProviders.of(this, viewModelFactory).get(MainActivityViewModel::class.java) }
 
     override fun initViews() {
+        GlobalScope.launch {
+            delay(1000)
+            ARouter.getInstance()
+                    .build("/gank/home")
+                    .navigation()
+        }
+        Snackbar.make(binding.root, gson.toJson(viewModel.hello()), Snackbar.LENGTH_LONG).show()
     }
 
     @SuppressLint("CheckResult")
     override fun onResume() {
         super.onResume()
-        Snackbar.make(binding.root, gson.toJson(viewModel.hello()), Snackbar.LENGTH_LONG).show()
-        GlobalScope.launch {
-            delay(1000)
-            ARouter.getInstance().build("/gank/home").navigation()
-        }
-
-        viewModel.queryPhoto().subscribe({
-            Snackbar.make(binding.root, it.desc, Snackbar.LENGTH_LONG).show()
-        })
+        viewModel.queryPhoto()
+                .bindToLifecycle(this)
+                .subscribe {
+                    Snackbar.make(binding.root, it.desc, Snackbar.LENGTH_LONG).show()
+                }
     }
 }

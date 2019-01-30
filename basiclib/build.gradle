@@ -42,6 +42,7 @@ dependencies {
     api deps.lifecycle.runtime
     api deps.lifecycle.extensions
     api deps.lifecycle.viewmodel
+    api deps.lifecycle.extensions
 
     kapt deps.room.compiler
     api deps.room.runtime
@@ -78,6 +79,9 @@ dependencies {
     api deps.router.api
 
     api deps.componentlib
+
+    api deps.shape
+    api deps.status_bar
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
