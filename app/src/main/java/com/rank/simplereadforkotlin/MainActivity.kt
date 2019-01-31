@@ -21,7 +21,6 @@ import javax.inject.Inject
 @Route(path = "/app/home")
 class MainActivity : CompatActivity<ActivityMainBinding>(), Injectable {
 
-
     override val layoutId: Int = R.layout.activity_main
 
     @Inject
@@ -40,6 +39,10 @@ class MainActivity : CompatActivity<ActivityMainBinding>(), Injectable {
                     .navigation()
         }
         Snackbar.make(binding.root, gson.toJson(viewModel.hello()), Snackbar.LENGTH_LONG).show()
+    }
+
+    override fun initEvents() {
+
     }
 
     @SuppressLint("CheckResult")

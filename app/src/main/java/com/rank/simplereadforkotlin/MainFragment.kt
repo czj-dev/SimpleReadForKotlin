@@ -2,6 +2,7 @@ package com.rank.simplereadforkotlin
 
 import com.rank.basiclib.di.Injectable
 import com.rank.basiclib.ext.CompatFragment
+import com.rank.simplereadforkotlin.databinding.AppFragmentMainBinding
 
 /**
  * <pre>
@@ -11,8 +12,16 @@ import com.rank.basiclib.ext.CompatFragment
  *     desc  :
  * </pre>
  */
-class MainFragment : CompatFragment<com.rank.simplereadforkotlin.databinding.AppFragmentMainBinding>(), Injectable {
+class MainFragment : CompatFragment<AppFragmentMainBinding>(), Injectable {
 
-    override val layoutId: Int=R.layout.app_fragment_main
+    override val layoutId = R.layout.app_fragment_main
+
+    override fun initViews() {
+
+    }
+
+    override fun initEvents() {
+
+    }
 
 }

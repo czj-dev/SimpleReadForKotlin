@@ -8,6 +8,8 @@ import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
 
+
+
 /**
  * <pre>
  *     author: ChenZhaoJun
@@ -22,8 +24,11 @@ abstract class CompatFragment<B : ViewDataBinding> : Fragment() {
 
     protected lateinit var binding: B
 
+    private var isFirstLoad = true
+
     abstract val layoutId: Int
 
+    protected fun lazyLoad() = false
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         rootView = LayoutInflater.from(context).inflate(layoutId, container, false)
@@ -36,6 +41,63 @@ abstract class CompatFragment<B : ViewDataBinding> : Fragment() {
         with(binding) {
             setLifecycleOwner(this@CompatFragment)
         }
+        if (!lazyLoad()) {
+            initViews()
+            initEvents()
+        }
     }
 
+    abstract fun initViews()
+
+    abstract fun initEvents()
+
+
+    /**
+     * 如果是与ViewPager一起使用，调用的是setUserVisibleHint
+     *
+     * @param isVisibleToUser 是否显示出来了
+     */
+    override fun setUserVisibleHint(isVisibleToUser: Boolean) {
+        super.setUserVisibleHint(isVisibleToUser)
+        if (userVisibleHint) {
+            onVisible()
+        } else {
+            onInvisible()
+        }
+    }
+
+    /**
+     * 如果是通过FragmentTransaction的show和hide的方法来控制显示，调用的是onHiddenChanged.
+     * 若是初始就show的Fragment 为了触发该事件 需要先hide再show
+     *
+     * @param hidden hidden True if the fragment is now hidden, false if it is not
+     *               visible.
+     */
+    override fun onHiddenChanged(hidden: Boolean) {
+        super.onHiddenChanged(hidden)
+        super.onHiddenChanged(hidden)
+        if (!hidden) {
+            onVisible()
+        } else {
+            onInvisible()
+        }
+    }
+
+    /**
+     * 当 Fragment 没有显示在界面上时会回调此方法
+     */
+    private fun onInvisible() {
+
+    }
+
+    /**
+     * 当 Fragment 显示在界面上的时候会回调此方法
+     */
+    private fun onVisible() {
+        if (lazyLoad() && isFirstLoad) {
+            isFirstLoad = false
+            initViews()
+            initEvents()
+        }
+    }
 }
