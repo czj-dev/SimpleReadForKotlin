@@ -3,8 +3,8 @@
     format="5"
     revision="1"
     name="MVVM_Builder"
-    minApi="9"
-    minBuildApi="15"
+    minApi="19"
+    minBuildApi="19"
     description="一键创建 MVVM 项目结构">
 
     <category value="Activity" />
@@ -18,11 +18,19 @@
         default="Main"
         help="请填写页面名,如填写 Main,会自动生成 MainActivity, MainViewModel 等文件" />
 
+<parameter
+        id="needRouter"
+        name="Generate Router"
+        type="boolean"
+        default="true"
+        help="是否需要生成 路由 ? 不勾选则不生成" />
+
     <parameter
         id="RouterName"
         name="Router Name"
         type="string"
         default="pageName"
+        visibility="needRouter"
         help="请填写路由地址 格式为 module/function 例如 app/home" />
 
     <parameter
@@ -30,7 +38,6 @@
             name="Root Package Name"
             type="string"
             constraints="package"
-            default="com.mycompany.myapp"
             help="请填写你的项目包名,请认真核实此包名是否是正确的项目包名,不能包含子包,正确的格式如:com.xxx.xxx"
             />
         
@@ -41,7 +48,6 @@
         type="boolean"
         default="true"
         help="是否需要生成 Activity ? 不勾选则不生成" />
-
 
 
 <parameter
@@ -59,7 +65,7 @@
         name="Ativity Package Name"
         type="string"
         constraints="package"
-        suggest="${packageName}.mvp.ui.activity"
+        suggest="${packageName}.ui.activity"
         visibility="needActivity"
         help="Activity 将被输出到此包下,请认真核实此包名是否是你需要输出的目标包名"
         />
@@ -89,7 +95,7 @@
         name="Fragment Package Name"
         type="string"
         constraints="package"
-        suggest="${packageName}.mvp.ui.fragment"
+        suggest="${packageName}.ui.fragment"
         visibility="needFragment"
         help="Fragment 将被输出到此包下,请认真核实此包名是否是你需要输出的目标包名"
         />  
@@ -107,21 +113,11 @@
         name="Model Package Name"
         type="string"
         constraints="package"
-        suggest="${packageName}.mvp.model"
+        suggest="${packageName}.viewmodel"
         visibility="needModel"
         help="Model 将被输出到此包下,请认真核实此包名是否是你需要输出的目标包名"
         />  
-
-   <parameter
-        id="moudlePackageName"
-        name="Moudle Package Name"
-        type="string"
-        constraints="package"
-        suggest="${packageName}.di.module"
-        visibility="needDagger"
-        help="Moudle 将被输出到此包下,请认真核实此包名是否是你需要输出的目标包名"
-        />  
-
+        
     <!-- 128x128 thumbnails relative to template.xml -->
     <thumbs>
         <!-- default thumbnail is required -->

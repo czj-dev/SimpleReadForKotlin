@@ -18,20 +18,19 @@
 </#if>
 
 <#if needActivity>
-    <instantiate from="root/src/app_package/ArmsActivity.${ktOrJavaExt}.ftl"
+    <instantiate from="root/src/app_package/Activity.${ktOrJavaExt}.ftl"
                    to="${projectOut}/src/main/java/${slashedPackageName(ativityPackageName)}/${pageName}Activity.${ktOrJavaExt}" />
     <open file="${projectOut}/src/main/java/${slashedPackageName(ativityPackageName)}/${pageName}Activity.${ktOrJavaExt}" />
 </#if>
 
 <#if needFragment>
-    <instantiate from="root/src/app_package/ArmsFragment.${ktOrJavaExt}.ftl"
+    <instantiate from="root/src/app_package/Fragment.${ktOrJavaExt}.ftl"
                    to="${projectOut}/src/main/java/${slashedPackageName(fragmentPackageName)}/${pageName}Fragment.${ktOrJavaExt}" />
     <open file="${projectOut}/src/main/java/${slashedPackageName(fragmentPackageName)}/${pageName}Fragment.${ktOrJavaExt}" />
 </#if>
 
 <#if needModel>
-    <instantiate from="root/src/app_package/ArmsModel.${ktOrJavaExt}.ftl"
-                   to="${projectOut}/src/main/java/${slashedPackageName(modelPackageName)}/${pageName}Model.${ktOrJavaExt}" />
+    <instantiate from="root/src/app_package/ViewModel.${ktOrJavaExt}.ftl"
+                   to="${projectOut}/src/main/java/${slashedPackageName(modelPackageName)}/${pageName}ViewModel.${ktOrJavaExt}" />
 </#if>
-
 </recipe>

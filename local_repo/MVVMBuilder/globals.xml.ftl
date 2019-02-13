@@ -7,6 +7,7 @@
     <global id="generateActivityTitle" type="boolean" value="false" />
     <global id="relativePackage" value="${ativityPackageName}" />
     <global id="activityClass" value="${pageName}Activity" />
+    <global id="diPath" value="${packageName}.di" />
     <global id="viewModelClass" value="${pageName}ViewModel" />
     <#include "../common/common_globals.xml.ftl" />
 </globals>
@@ -16,12 +17,13 @@
  * ================================================
  * Description:
  * <p>
- * Created by MVPArmsTemplate on ${.now?string["MM/dd/yyyy HH:mm"]}
- * <a href="mailto:jess.yan.effort@gmail.com">Contact me</a>
- * <a href="https://github.com/JessYanCoding">Follow me</a>
- * <a href="https://github.com/JessYanCoding/MVPArms">Star me</a>
- * <a href="https://github.com/JessYanCoding/MVPArms/wiki">See me</a>
- * <a href="https://github.com/JessYanCoding/MVPArmsTemplate">模版请保持更新</a>
+ * Created by MVVMTemplate on ${.now?string["MM/dd/yyyy HH:mm"]}
  * ================================================
  */
 </#macro>
+
+<#function getName name>
+    <#assign replaceStr>${name?replace("_"," ")?capitalize}</#assign>
+    <#assign connectStr>${replaceStr?replace(" ","")}</#assign>
+    <#return connectStr>
+</#function>
