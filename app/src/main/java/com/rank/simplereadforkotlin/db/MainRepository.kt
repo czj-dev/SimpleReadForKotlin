@@ -1,11 +1,6 @@
 package com.rank.simplereadforkotlin.db
 
-import com.rank.basiclib.error.shelling
 import com.rank.basiclib.http.NetworkManager
-import com.rank.simplereadforkotlin.entity.GirlPhoto
-import com.rank.simplereadforkotlin.entity.api.MainService
-import io.reactivex.Observable
-import io.reactivex.android.schedulers.AndroidSchedulers
 import javax.inject.Inject
 
 /**
@@ -17,15 +12,5 @@ import javax.inject.Inject
  * </pre>
  */
 class MainRepository @Inject constructor(private val networkManager: NetworkManager) {
-
-
-    fun obtainLastPhoto(): Observable<GirlPhoto> {
-        return networkManager
-                .load(MainService::class.java)
-                .queryLastPhoto()
-                .observeOn(AndroidSchedulers.mainThread())
-                .shelling()
-                .map { it[0] }
-    }
 
 }

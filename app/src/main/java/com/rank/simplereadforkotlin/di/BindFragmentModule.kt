@@ -1,8 +1,6 @@
 package com.rank.simplereadforkotlin.di
 
-import com.rank.simplereadforkotlin.MainFragment
 import dagger.Module
-import dagger.android.ContributesAndroidInjector
 
 /**
  * <pre>
@@ -15,8 +13,5 @@ import dagger.android.ContributesAndroidInjector
 @Suppress("unused")
 @Module
 abstract class BindFragmentModule {
-
-    @ContributesAndroidInjector
-    abstract fun contributesMainFragment():MainFragment
 
 }

@@ -5,13 +5,11 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.alibaba.android.arouter.launcher.ARouter
-import com.google.android.material.snackbar.Snackbar
 import com.google.gson.Gson
 import com.rank.basiclib.di.Injectable
 import com.rank.basiclib.ext.CompatActivity
 import com.rank.simplereadforkotlin.databinding.ActivityMainBinding
 import com.rank.simplereadforkotlin.viewmodel.MainActivityViewModel
-import com.trello.rxlifecycle3.android.lifecycle.kotlin.bindToLifecycle
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -38,7 +36,6 @@ class MainActivity : CompatActivity<ActivityMainBinding>(), Injectable {
                     .build("/gank/home")
                     .navigation()
         }
-        Snackbar.make(binding.root, gson.toJson(viewModel.hello()), Snackbar.LENGTH_LONG).show()
     }
 
     override fun initEvents() {
@@ -48,10 +45,5 @@ class MainActivity : CompatActivity<ActivityMainBinding>(), Injectable {
     @SuppressLint("CheckResult")
     override fun onResume() {
         super.onResume()
-        viewModel.queryPhoto()
-                .bindToLifecycle(this)
-                .subscribe {
-                    Snackbar.make(binding.root, it.desc, Snackbar.LENGTH_LONG).show()
-                }
     }
 }
