@@ -2,7 +2,8 @@ package com.rank.gank.di
 
 import androidx.lifecycle.ViewModel
 import com.rank.basiclib.di.ViewModelKey
-import com.rank.gank.viewmodel.GankActivityViewModel
+import com.rank.gank.viewmodel.HomeActivityViewModel
+import com.rank.gank.viewmodel.PhotoViewModel
 import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap
@@ -20,7 +21,12 @@ abstract class GankBindViewModule {
 
     @Binds
     @IntoMap
-    @ViewModelKey(GankActivityViewModel::class)
-    abstract fun bindMainAcitivtyViewModel(viewModel: GankActivityViewModel): ViewModel
+    @ViewModelKey(HomeActivityViewModel::class)
+    abstract fun bindMainAcitivtyViewModel(viewModel: HomeActivityViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(PhotoViewModel::class)
+    abstract fun bindPhotoViewModel(viewModel: PhotoViewModel): ViewModel
 
 }

@@ -16,7 +16,7 @@ import javax.inject.Provider
  * </pre>
  */
 @ActivityScope
-@Component(modules = [AndroidInjectionModule::class,GankBindViewModule::class, GankBindActivityModule::class], dependencies = [AppComponent::class])
+@Component(modules = [AndroidInjectionModule::class, GankBindViewModule::class, GankBindActivityModule::class, BindFragmentModule::class], dependencies = [AppComponent::class])
 interface GankModuleComponent {
 
     fun viewModules(): Map<Class<out ViewModel>, @JvmSuppressWildcards Provider<ViewModel>>

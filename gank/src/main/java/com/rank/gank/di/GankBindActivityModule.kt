@@ -1,6 +1,6 @@
 package com.rank.gank.di
 
-import com.rank.gank.ui.GankActivity
+import com.rank.gank.ui.activity.GankHomeActivity
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 
@@ -15,8 +15,7 @@ import dagger.android.ContributesAndroidInjector
 @Module
 abstract class GankBindActivityModule {
 
-
     @ContributesAndroidInjector
-    abstract fun contributesGankActivity(): GankActivity
+    abstract fun contributesGankActivity(): GankHomeActivity
 
 }

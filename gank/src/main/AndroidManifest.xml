@@ -3,7 +3,7 @@
           package="com.rank.gank">
 
     <application>
-        <activity android:name=".ui.GankActivity">
+        <activity android:name=".ui.activity.GankHomeActivity">
         </activity>
     </application>
 
