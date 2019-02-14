@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
-
+import com.rank.basiclib.binding.FragmentDataBindingComponent
 
 
 /**
@@ -37,7 +37,7 @@ abstract class CompatFragment<B : ViewDataBinding> : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding = DataBindingUtil.bind(rootView)!!
+        binding = DataBindingUtil.bind(rootView, FragmentDataBindingComponent(this))!!
         with(binding) {
             setLifecycleOwner(this@CompatFragment)
         }

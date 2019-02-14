@@ -62,6 +62,13 @@ dependencies {
     api deps.rx.lifecycle_android_provider
     api deps.rx.lifecycle_kotlin
 
+    api deps.rx.binding_appcompat
+    api deps.rx.binding_viewpager
+    api deps.rx.binding_swiperefreshlayout
+    api deps.rx.binding_recyclerview
+
+    api deps.adapterHelper
+
     api deps.timber
 
     kapt deps.dagger.android_support_compiler

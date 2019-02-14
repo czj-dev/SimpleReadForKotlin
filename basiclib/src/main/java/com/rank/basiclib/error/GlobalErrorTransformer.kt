@@ -7,6 +7,13 @@ typealias OnErrorResumeNext<T> = (Throwable) -> Observable<T>
 typealias OnErrorRetrySupplier = (Throwable) -> RetryConfig
 typealias OnErrorConsumer = (Throwable) -> Unit
 
+/**
+ * 扩展Rx处理错误的能力，参考自 <p> https://github.com/qingmei2/RxWeaver </p>
+ * onNextInterceptor: 提前判断数据业务逻辑，筛选出错误拦截并抛出异常
+ * onErrorResumeNext：出现错误后再次发射一个正常数据，默认处理是 empty()
+ * onErrorRetrySupplier: 重试条件
+ * onErrorConsumer：自己二次处理错误实现
+ */
 class GlobalErrorTransformer<T, K> constructor(
         private val onNextInterceptor: OnNextInterceptor<T, K>,
         private val onErrorResumeNext: OnErrorResumeNext<K> = { Observable.empty<K>() },

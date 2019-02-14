@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import com.noober.background.BackgroundLibrary
+import com.rank.basiclib.binding.ActivityDataBindingComponent
 
 
 /**
@@ -34,7 +35,7 @@ abstract class CompatActivity<B : ViewDataBinding> : AppCompatActivity() {
     }
 
     private fun initViewBinding() {
-        binding = DataBindingUtil.setContentView(this, layoutId)
+        binding = DataBindingUtil.setContentView(this, layoutId, ActivityDataBindingComponent(this))
         with(binding) {
             setLifecycleOwner(this@CompatActivity)
         }
