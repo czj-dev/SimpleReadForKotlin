@@ -1,6 +1,7 @@
 package com.rank.basiclib.di
 
 import androidx.lifecycle.ViewModelProvider
+import com.rank.basiclib.error.ServiceErrorHandler
 import com.rank.basiclib.log.GlobalHttpHandler
 import com.rank.basiclib.log.RequestInterceptor
 import dagger.Module
@@ -20,6 +21,8 @@ import javax.inject.Singleton
 class EnvironmentModule {
     lateinit var factory: ViewModelProvider.Factory
     lateinit var handler: GlobalHttpHandler
+    lateinit var serviceErrorHandlers: MutableList<ServiceErrorHandler>
+
 
     @Singleton
     @Provides
@@ -29,6 +32,9 @@ class EnvironmentModule {
     @Singleton
     fun providerHttpHandler() = handler
 
+    @Provides
+    @Singleton
+    fun providerServiceErrorHandler() = serviceErrorHandlers
 
     @Provides
     @Singleton

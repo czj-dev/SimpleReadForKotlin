@@ -39,7 +39,7 @@ class NetworkManager
      * @param serviceClass ApiService class
      * @param <T>          ApiService class
      * @return ApiService
-    </T> */
+     */
     @Synchronized
     fun <T : Any> load(serviceClass: Class<T>): T {
         return createWrapperService(serviceClass)
@@ -106,7 +106,6 @@ class NetworkManager
     }
 
     override fun onHttpRequestBefore(chain: Interceptor.Chain, request: Request): Request {
-
         return request
     }
 }

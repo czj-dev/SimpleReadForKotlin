@@ -11,7 +11,7 @@ import com.rank.basiclib.data.AppResponse
  * </pre>
  */
 
-class ServiceException(val response: AppResponse<*>) : RuntimeException() {
+class ServiceException( val response: AppResponse<*>) : RuntimeException() {
 
     override val message: String
         get() = response.message() ?: super.message ?: ""

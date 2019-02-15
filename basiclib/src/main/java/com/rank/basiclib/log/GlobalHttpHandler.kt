@@ -9,13 +9,19 @@ import okhttp3.Response
  *     author: ChenZhaoJun
  *     url  :
  *     time  : 2018/9/11
- *     desc  :
+ *     desc  :  应用的网络中间层接口
  * </pre>
  */
 interface GlobalHttpHandler {
 
+    /**
+     * 每个网络请求在交由应用层处理前会转交给接口预处理
+     */
     fun onHttpResultResponse(httpResult: String?, chain: Interceptor.Chain, response: Response): Response
 
+    /**
+     * 每个网络请求在交由 OkHttp 请求前都会交由接口预处理
+     */
     fun onHttpRequestBefore(chain: Interceptor.Chain, request: Request): Request
 
 }

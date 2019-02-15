@@ -28,7 +28,7 @@ import kotlin.collections.HashMap
  *     author: ChenZhaoJun
  *     url  :
  *     time  : 2019/1/2
- *     desc  :
+ *     desc  : 应用的核心控制，Dagger2和各组件的初始化、注册都在这里
  * </pre>
  */
 open class BaseApplication : Application(), HasActivityInjector, HasSupportFragmentInjector {
@@ -60,17 +60,11 @@ open class BaseApplication : Application(), HasActivityInjector, HasSupportFragm
     override fun onCreate() {
         super.onCreate()
         val environmentModule = EnvironmentModule()
-        environmentModule.handler = object : GlobalHttpHandler {
-            override fun onHttpResultResponse(httpResult: String?, chain: Interceptor.Chain, response: Response): Response {
-                return response
-            }
+        environmentModule.handler = globalHttpHandler
+        environmentModule.serviceErrorHandlers = arrayListOf()
+        environmentModule.serviceErrorHandlers.addAll(appLifecycle)
 
-            override fun onHttpRequestBefore(chain: Interceptor.Chain, request: Request): Request {
-                return request
-            }
-        }
         appComponent = AppInjector.init(this, environmentModule)
-
         val injectUtils = AndroidInjectorUtils()
         for (appLifecycleObservable in appLifecycle) {
 
@@ -117,6 +111,28 @@ open class BaseApplication : Application(), HasActivityInjector, HasSupportFragm
         super.onTerminate()
         for (appLifecycleObservable in appLifecycle) {
             appLifecycleObservable.onTerminate(this)
+        }
+    }
+
+    /**
+     * 在 OkHttp 处理网络请求之前加工它，和应用层得到 response 之前预处理它
+     * 会调用所有注册的组件方法
+     */
+    private val globalHttpHandler = object : GlobalHttpHandler {
+        override fun onHttpResultResponse(httpResult: String?, chain: Interceptor.Chain, response: Response): Response {
+            var cResponse: Response = response
+            for (appLifecycleObservable in appLifecycle) {
+                cResponse = appLifecycleObservable.onHttpResultResponse(httpResult, chain, cResponse)
+            }
+            return cResponse
+        }
+
+        override fun onHttpRequestBefore(chain: Interceptor.Chain, request: Request): Request {
+            var cRequest: Request = request
+            for (appLifecycleObservable in appLifecycle) {
+                cRequest = appLifecycleObservable.onHttpRequestBefore(chain, cRequest)
+            }
+            return cRequest
         }
     }
 

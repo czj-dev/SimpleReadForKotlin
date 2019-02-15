@@ -5,8 +5,10 @@ import android.content.Context;
 import com.google.auto.service.AutoService;
 import com.rank.basiclib.application.AppLifecycle;
 import com.rank.basiclib.application.BaseApplication;
+import com.rank.basiclib.error.ServiceException;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Map;
 
@@ -16,6 +18,9 @@ import javax.inject.Provider;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModel;
 import dagger.android.AndroidInjector;
+import okhttp3.Interceptor;
+import okhttp3.Request;
+import okhttp3.Response;
 
 /**
  * <pre>
@@ -71,4 +76,20 @@ public class AppLifecycleImpl implements AppLifecycle {
         return stringKeyedInjectorFactories;
     }
 
+    @NotNull
+    @Override
+    public Response onHttpResultResponse(@Nullable String httpResult, @NotNull Interceptor.Chain chain, @NotNull Response response) {
+        return response;
+    }
+
+    @NotNull
+    @Override
+    public Request onHttpRequestBefore(@NotNull Interceptor.Chain chain, @NotNull Request request) {
+        return request;
+    }
+
+    @Override
+    public boolean handlerServiceException(@NotNull ServiceException t) {
+        return false;
+    }
 }
