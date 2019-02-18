@@ -9,6 +9,7 @@ import androidx.multidex.MultiDex
 import com.alibaba.android.arouter.launcher.ARouter
 import com.rank.basiclib.BuildConfig
 import com.rank.basiclib.di.*
+import com.rank.basiclib.error.ExceptionHandleFactory
 import com.rank.basiclib.log.GlobalHttpHandler
 import com.rank.basiclib.utils.ViewUtils
 import dagger.android.DispatchingAndroidInjector
@@ -44,6 +45,9 @@ open class BaseApplication : Application(), HasActivityInjector, HasSupportFragm
 
     @Inject
     lateinit var activityLifecycleCallbacks: ActivityLifecycleCallbacks
+
+    @Inject
+    lateinit var exceptionHandleFactory: ExceptionHandleFactory
 
     lateinit var appComponent: AppComponent
 
