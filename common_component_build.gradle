@@ -4,9 +4,13 @@ apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 
 kapt {
+    // ARouter 配置
     arguments {
+        //module name
         arg("AROUTER_MODULE_NAME", project.getName())
-        arg("AROUTER_GENERATE_DOC","enable")
+        //是否开启路由表日志文档
+        //生成的文档路径 : build/generated/source/apt/(debug or release)/com/alibaba/android/arouter/docs/arouter-map-of-${moduleName}.json
+        arg("AROUTER_GENERATE_DOC", "enable")
     }
 }
 android {
@@ -41,7 +45,6 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-
     implementation project(":service")
     kapt deps.dagger.android_support_compiler
     kapt deps.dagger.compiler

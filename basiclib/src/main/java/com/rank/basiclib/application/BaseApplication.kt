@@ -42,7 +42,6 @@ open class BaseApplication : Application(), HasActivityInjector, HasSupportFragm
 
     private lateinit var fragmentDispatchingAndroidInjector: DispatchingAndroidInjector<Fragment>
 
-
     @Inject
     lateinit var activityLifecycleCallbacks: ActivityLifecycleCallbacks
 
