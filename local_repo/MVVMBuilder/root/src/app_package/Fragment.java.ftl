@@ -3,15 +3,16 @@
 <#assign fragmentName>${pageName}Fragment</#assign>
 <#assign dataBindingName>${gb.getName(fragmentLayoutName)}Binding</#assign>
 package ${fragmentPackageName};
-
-import com.rank.basiclib.di.Injectable;
-import com.rank.basiclib.ext.CompatFragment;
 import ${packageName}.databinding.${dataBindingName};
 <#if needRouter>
 import com.alibaba.android.arouter.facade.annotation.Route;
 </#if>
-<#if (needModel)>
 import javax.inject.Inject;
+import com.rank.basiclib.Constant
+import com.rank.basiclib.di.Injectable;
+import com.rank.basiclib.ext.CompatFragment;
+import com.rank.basiclib.annotations.BindDepend;
+<#if (needModel)>
 import ${modelPackageName}.${viewModelClass};
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
@@ -20,6 +21,7 @@ import androidx.lifecycle.ViewModelProviders;
 <#if needRouter>
 @Route(path = "${RouterName}")
 </#if>
+@BindDepend(Constant.ClassType.FRAGMENT)
 class ${fragmentName} extends CompatFragment<${dataBindingName}>() implements Injectable {
     
     <#if (needModel)>

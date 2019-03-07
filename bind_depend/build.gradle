@@ -1,0 +1,9 @@
+apply plugin: 'java'
+sourceCompatibility = JavaVersion.VERSION_1_7
+targetCompatibility = JavaVersion.VERSION_1_7
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    implementation 'com.google.auto.service:auto-service:1.0-rc4'
+    implementation project(':binddepend_annotation')
+}

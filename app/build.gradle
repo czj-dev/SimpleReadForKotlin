@@ -42,6 +42,9 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    configurations.all {
+        resolutionStrategy.force 'com.google.code.findbugs:jsr305:2.0.1'
+    }
 }
 
 dependencies {
@@ -52,6 +55,7 @@ dependencies {
     kapt deps.dagger.compiler
     kapt deps.data.service
     kapt deps.router.compiler
+    kapt project(':bind_depend')
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'

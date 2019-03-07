@@ -11,9 +11,12 @@
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/basiclib" />
             <option value="$PROJECT_DIR$/basicres" />
+            <option value="$PROJECT_DIR$/bind_depend" />
+            <option value="$PROJECT_DIR$/binddepend_annotation" />
             <option value="$PROJECT_DIR$/component" />
             <option value="$PROJECT_DIR$/gank" />
             <option value="$PROJECT_DIR$/service" />
+            <option value="$PROJECT_DIR$/wanandroid" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />

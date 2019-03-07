@@ -1,6 +1,7 @@
 package com.dd.buildgradle
 
 import com.android.build.api.transform.*
+import com.android.build.gradle.internal.LoggingUtil
 import com.android.build.gradle.internal.pipeline.TransformManager
 import javassist.*
 import org.apache.commons.codec.digest.DigestUtils
@@ -8,12 +9,15 @@ import org.apache.commons.io.FileUtils
 import org.github.jimu.msg.MsgBridgeService
 import org.github.jimu.msg.ServiceInfoBean
 import org.gradle.api.Project
+import org.gradle.api.logging.Logger
+import org.gradle.api.logging.Logging
 
 class ComCodeTransform extends Transform {
 
     private Project project
     ClassPool classPool
     String applicationName
+    Logger logger
 
     ComCodeTransform(Project project) {
         this.project = project
@@ -21,6 +25,8 @@ class ComCodeTransform extends Transform {
 
     @Override
     void transform(TransformInvocation transformInvocation) throws TransformException, InterruptedException, IOException {
+        logger = Logging.getLogger(this.getClass())
+
         getRealApplicationName(transformInvocation.getInputs())
         classPool = new ClassPool()
         project.android.bootClasspath.each {
@@ -134,8 +140,7 @@ class ComCodeTransform extends Transform {
         }
     }
 
-    private
-    static void injectEventManagerInitializeCode(CtClass ctClassApplication, List<CtClass> serviceInfoBeans, String patch) {
+    private static void injectEventManagerInitializeCode(CtClass ctClassApplication, List<CtClass> serviceInfoBeans, String patch) {
         System.out.println("injectEventManagerInitializeCode begin")
         ctClassApplication.defrost()
         try {
@@ -166,28 +171,44 @@ class ComCodeTransform extends Transform {
         System.out.println("injectApplicationCode begin")
         ctClassApplication.defrost()
         try {
-            CtMethod attachBaseContextMethod = ctClassApplication.getDeclaredMethod("onCreate", null)
-            attachBaseContextMethod.insertAfter(getAutoLoadComCode(activators))
+            CtMethod attachBaseContextMethod = ctClassApplication.getDeclaredMethod("attachBaseContext", new CtClass[classPool.get("android.content.Context")])
+            attachBaseContextMethod.insertAfter(initAppDelegate(activators))
+            LoggingUtil.displayWarning(logger, project, "attachBaseContext")
+
+            /*     CtMethod onCreateMethod = ctClassApplication.getDeclaredMethod("onCreate", null)
+                 onCreateMethod.insertAfter(getAutoLoadComCode(activators))*/
         } catch (CannotCompileException | NotFoundException e) {
-
-            System.out.println("could not found onCreate in Application;   " + e.toString())
-
-            StringBuilder methodBody = new StringBuilder()
-            methodBody.append("protected void onCreate() {")
-            methodBody.append("super.onCreate();")
-            methodBody.append(getAutoLoadComCode(activators))
-            methodBody.append("}")
-            ctClassApplication.addMethod(CtMethod.make(methodBody.toString(), ctClassApplication))
+            LoggingUtil.displayWarning(logger, project, "could not found onCreate in Application;   " + e.toString())
+            CtMethod onCreateMethod = ctClassApplication.getDeclaredMethod("onCreate", null)
+            onCreateMethod.insertAfter(getAutoLoadComCode(activators))
+//            createAttachBaseContextMethod(activators, ctClassApplication)
         } catch (Exception e) {
             System.out.println("could not create onCreate() in Application;   " + e.toString())
         }
         ctClassApplication.writeFile(patch)
 //        ctClassApplication.detach()
-
         System.out.println("injectApplicationCode success ")
     }
 
-      static String generateEventManagerInitializeCode(List<ServiceInfoBean> serviceInfoBeans) {
+    private static void createAttachBaseContextMethod(List<ServiceInfoBean> activators, CtClass ctClassApplication) {
+        StringBuilder methodBody = new StringBuilder()
+        methodBody.append("protected void attachBaseContext(Context base) {")
+        methodBody.append("super.attachBaseContext(base);")
+        methodBody.append(initAppDelegate(activators))
+        methodBody.append("}")
+        ctClassApplication.addMethod(CtMethod.make(methodBody.toString(), ctClassApplication))
+    }
+
+    private static void createOnCreateMethod(List<ServiceInfoBean> activators, CtClass ctClassApplication) {
+        StringBuilder methodBody = new StringBuilder()
+        methodBody.append("protected void onCreate() {")
+        methodBody.append("super.onCreate();")
+        methodBody.append(getAutoLoadComCode(activators))
+        methodBody.append("}")
+        ctClassApplication.addMethod(CtMethod.make(methodBody.toString(), ctClassApplication))
+    }
+
+    static String generateEventManagerInitializeCode(List<ServiceInfoBean> serviceInfoBeans) {
         StringBuilder initializeCodeBuilder = new StringBuilder()
         serviceInfoBeans?.forEach({
             //   EventManager.appendMapper("pname", XXX.class);
@@ -207,6 +228,17 @@ class ComCodeTransform extends Transform {
             autoLoadComCode.append("new " + ctClass.getName() + "()" + ".onCreate();")
         }
 
+        return autoLoadComCode.toString()
+    }
+
+    private static String initAppDelegate(List<CtClass> activators) {
+        StringBuilder autoLoadComCode = new StringBuilder()
+        for (CtClass ctClass : activators) {
+            autoLoadComCode.append("appLifecycle.add(new " + ctClass.getName() + "());\n")
+        }
+        autoLoadComCode.append("for (appLifecycleObservable in appLifecycle) {\n")
+        autoLoadComCode.append("appLifecycleObservable.attachBaseContext(this);\n")
+        autoLoadComCode.append("}")
         return autoLoadComCode.toString()
     }
 
@@ -230,8 +262,8 @@ class ComCodeTransform extends Transform {
     private static boolean isActivator(CtClass ctClass) {
         try {
             for (CtClass ctClassInter : ctClass.getInterfaces()) {
-                if ("com.rank.service.application.IApplicationLike".equals(ctClassInter.name)) {
-                    boolean hasManualNotation = ctClass.hasAnnotation(Class.forName("com.rank.service.application.RegisterCompManual"))
+                if ("com.rank.basiclib.application.AppLifecycle".equals(ctClassInter.name)) {
+                    boolean hasManualNotation = ctClass.hasAnnotation(Class.forName("com.luojilab.component.componentlib.applicationlike.RegisterCompManual"))
 //                    return true
                     System.out.println(">>>> " + ctClass + " manual register?" + hasManualNotation)
                     return !hasManualNotation

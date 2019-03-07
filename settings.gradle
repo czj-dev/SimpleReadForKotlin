@@ -1,1 +1,1 @@
-include ':app', ':basiclib', ':basicres', ':component', ':gank', ':service'
+include ':app', ':basiclib', ':basicres', ':component', ':gank', ':service', ':bind_depend', ':binddepend_annotation', ':wanandroid'
