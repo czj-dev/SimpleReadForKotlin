@@ -7,7 +7,7 @@ import com.rank.basiclib.di.Injectable
 import com.rank.basiclib.ext.CompatActivity
 import com.rank.binddepend_annotation.BindDepend
 import com.rank.wanandroid.R
-import com.rank.wanandroid.databinding.ActivityAndroidHomeBinding
+import com.rank.wanandroid.databinding.WanActivityAndroidHomeBinding
 import com.rank.wanandroid.viewmodel.AndroidHomeViewModel
 import javax.inject.Inject
 
@@ -21,7 +21,7 @@ import javax.inject.Inject
  */
 @BindDepend(0)
 @Route(path = "wanAndroidHome")
-class AndroidHomeActivity : CompatActivity<ActivityAndroidHomeBinding>(), Injectable {
+class AndroidHomeActivity : CompatActivity<WanActivityAndroidHomeBinding>(), Injectable {
 
     override val layoutId = R.layout.wan_activity_android_home
     @Inject
