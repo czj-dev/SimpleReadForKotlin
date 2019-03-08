@@ -5,7 +5,8 @@ buildscript {
     dependencies {
         classpath deps.android_gradle_plugin
         classpath deps.kotlin.plugin
-        classpath "com.build.gradle:module-component:1.0.0"
+        classpath deps.component
+        classpath deps.bugly.tinker_support
     }
 }
 

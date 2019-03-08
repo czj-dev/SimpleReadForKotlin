@@ -12,6 +12,8 @@ import com.rank.basiclib.di.*
 import com.rank.basiclib.error.ExceptionHandleFactory
 import com.rank.basiclib.log.GlobalHttpHandler
 import com.rank.basiclib.utils.ViewUtils
+import com.tencent.bugly.Bugly
+import com.tencent.bugly.beta.Beta
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasActivityInjector
 import dagger.android.support.HasSupportFragmentInjector
@@ -53,6 +55,7 @@ open class BaseApplication : Application(), HasActivityInjector, HasSupportFragm
     override fun attachBaseContext(base: Context?) {
         super.attachBaseContext(base)
         MultiDex.install(base)
+        Beta.installTinker()
         //通过 ServiceLoader 来装载各个 Module 的 AppLifecycle
         appLifecycle = ServiceLoader.load(AppLifecycle::class.java)
         for (appLifecycleObservable in appLifecycle) {
@@ -62,6 +65,7 @@ open class BaseApplication : Application(), HasActivityInjector, HasSupportFragm
 
     override fun onCreate() {
         super.onCreate()
+        Bugly.init(this, "566ad11e23", true)
         val environmentModule = EnvironmentModule()
         environmentModule.handler = globalHttpHandler
         environmentModule.serviceErrorHandlers = arrayListOf()

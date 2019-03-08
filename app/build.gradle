@@ -2,6 +2,7 @@ apply plugin: 'com.gradle.component'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
+apply from: 'tinker-support.gradle'
 
 kapt {
     // ARouter 配置
@@ -27,6 +28,9 @@ android {
             annotationProcessorOptions {
                 includeCompileClasspath = true
             }
+        }
+        ndk {
+            abiFilters "armeabi", "armeabi-v7a", "x86"
         }
     }
     compileOptions {
