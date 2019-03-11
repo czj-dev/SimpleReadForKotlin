@@ -3,11 +3,14 @@ package ${modelPackageName}
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
+import com.rank.basiclib.Constant.ClassType.VIEWMODEl
+import com.rank.binddepend_annotation.BindDepend
+<#if (needRepository)>
+import ${repositoryPackageName}.${repositoryClass}
+</#if>
 import javax.inject.Inject
-import com.rank.basiclib.Constant
-import com.rank.basiclib.annotations.BindDepend
 
-@BindDepend(Constant.ClassType.VIEW_MODEL)
-class ${viewModelClass} @Inject constructor(application: Application) : AndroidViewModel(application) {
+@BindDepend(VIEWMODEl)
+class ${viewModelClass} @Inject constructor(application: Application <#if (needRepository)>, private val repository: ${repositoryClass}</#if>) : AndroidViewModel(application) {
 
 }

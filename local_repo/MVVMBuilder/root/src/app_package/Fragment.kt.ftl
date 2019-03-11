@@ -10,10 +10,10 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import ${modelPackageName}.${viewModelClass}
 </#if>
-import com.rank.basiclib.Constant
 import com.rank.basiclib.di.Injectable
 import com.rank.basiclib.ext.CompatFragment
-import com.rank.basiclib.annotations.BindDepend
+import com.rank.binddepend_annotation.BindDepend;
+import com.rank.basiclib.Constant.ClassType.FRAGMENT;
 import ${packageName}.databinding.${dataBindingName}
 <#if needRouter>
 import com.alibaba.android.arouter.facade.annotation.Route
@@ -23,7 +23,7 @@ import com.alibaba.android.arouter.facade.annotation.Route
 <#if needRouter>
 @Route(path = "${RouterName}")
 </#if>
-@BindDepend(Constant.ClassType.FRAGMENT)
+@BindDepend(FRAGMENT)
 class ${fragmentName} : CompatFragment<${dataBindingName}>(), Injectable {
 
 <#if (needModel)>

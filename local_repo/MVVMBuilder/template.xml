@@ -29,7 +29,7 @@
         id="RouterName"
         name="Router Name"
         type="string"
-        default="pageName"
+        suggest="${pageName}"
         visibility="needRouter"
         help="请填写路由地址 格式为 module/function 例如 app/home" />
 
@@ -40,9 +40,13 @@
             constraints="package"
             help="请填写你的项目包名,请认真核实此包名是否是正确的项目包名,不能包含子包,正确的格式如:com.xxx.xxx"
             />
-        
+<parameter
+            id="resourcePrefix"
+            name="resourcePrefix"
+            type="string"
+            help="如果有声明 resourceRrefix 请填写"/>        
 
-    <parameter
+<parameter
         id="needActivity"
         name="Generate Activity"
         type="boolean"
@@ -50,8 +54,8 @@
         help="是否需要生成 Activity ? 不勾选则不生成" />
 
 
-<parameter
-        id="activityLayoutName"
+    <parameter
+        id="activityLayoutResouce"
         name="Activity Layout Name"
         type="string"
         constraints="layout|nonempty"
@@ -60,7 +64,7 @@
         visibility="needActivity"
         help="Activity 创建之前需要填写 Activity 的布局名" />
 
- <parameter
+    <parameter
         id="ativityPackageName"
         name="Ativity Package Name"
         type="string"
@@ -70,7 +74,7 @@
         help="Activity 将被输出到此包下,请认真核实此包名是否是你需要输出的目标包名"
         />
 
-    <parameter
+<parameter
         id="needFragment"
         name="Generate Fragment"
         type="boolean"
@@ -78,10 +82,8 @@
         help="是否需要生成 Fragment ? 不勾选则不生成" /> 
 
 
-
-
     <parameter
-        id="fragmentLayoutName"
+        id="fragmentLayoutResouce"
         name="Fragment Layout Name"
         type="string"
         constraints="layout|nonempty"
@@ -90,7 +92,7 @@
         visibility="needFragment"
         help="Fragment 创建之前需要填写 Fragment 的布局名" /> 
 
- <parameter
+    <parameter
         id="fragmentPackageName"
         name="Fragment Package Name"
         type="string"
@@ -108,7 +110,7 @@
         help="是否需要生成 Model ? 不勾选则不生成" /> 
 
 
-<parameter
+    <parameter
         id="modelPackageName"
         name="Model Package Name"
         type="string"
@@ -117,7 +119,24 @@
         visibility="needModel"
         help="Model 将被输出到此包下,请认真核实此包名是否是你需要输出的目标包名"
         />  
-        
+
+<parameter
+        id="needRepository"
+        name="Generate Repository"
+        type="boolean"
+        default="true"
+        help="是否需要生成 Repository ? 不勾选则不生成" /> 
+
+    <parameter
+        id="repositoryPackageName"
+        name="Repository Package Name"
+        type="string"
+        constraints="package"
+        suggest="${packageName}.data.repository"
+        visibility="needRepository"
+        help="Repository 将被输出到此包下,请认真核实此包名是否是你需要输出的目标包名"
+        />  
+
     <!-- 128x128 thumbnails relative to template.xml -->
     <thumbs>
         <!-- default thumbnail is required -->

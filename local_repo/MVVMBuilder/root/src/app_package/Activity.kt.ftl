@@ -6,11 +6,10 @@
 package ${ativityPackageName}
 
 import javax.inject.Inject
-import com.rank.basiclib.Constant
 import com.rank.basiclib.di.Injectable
 import com.rank.basiclib.ext.CompatActivity
-import com.rank.basiclib.annotations.BindDepend
-
+import com.rank.binddepend_annotation.BindDepend
+import com.rank.basiclib.Constant.ClassType.ACTIVITY;
 <#if (needModel)>
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
@@ -28,7 +27,7 @@ import ${packageName}.R
 <#if needRouter>
 @Route(path = "${RouterName}")
 </#if>
-@BindDepend(Constant.ClassType.ACTIVITY)
+@BindDepend(ACTIVITY)
 class ${activityClass} : CompatActivity<${dataBindingName}>(), Injectable {
 
     override val layoutId = R.layout.${activityLayoutName}

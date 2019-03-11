@@ -1,19 +1,25 @@
 <#import "root://activities/MVVMBuilder/globals.xml.ftl" as gb>
 package ${modelPackageName}
 
-import android.app.Application;
 import javax.inject.Inject;
-import com.rank.basiclib.Constant;
-import com.rank.basiclib.annotations.BindDepend;
+import android.app.Application;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
+import com.rank.binddepend_annotation.BindDepend;
+import com.rank.basiclib.Constant.ClassType.VIEWMODEl;
+<#if (needRepository)>
+import ${repositoryPackageName}.${repositoryClass};
+</#if>
 
-@BindDepend(Constant.ClassType.VIEW_MODEL)
+@BindDepend(VIEWMODEl)
 public class ${viewModelClass}  extends AndroidViewModel {
+    
+    private ${repositoryClass}  repository;
 
     @Inject
-    public DIDIViewModel(@NonNull Application application) {
+    public ${viewModelClass}(@NonNull Application application <#if (needRepository)> , ${repositoryClass}  repository</#if>) {
         super(application);
+        this.repository=repository;
     }
 
 }

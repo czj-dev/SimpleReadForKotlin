@@ -8,10 +8,10 @@ import ${packageName}.databinding.${dataBindingName};
 import com.alibaba.android.arouter.facade.annotation.Route;
 </#if>
 import javax.inject.Inject;
-import com.rank.basiclib.Constant
 import com.rank.basiclib.di.Injectable;
 import com.rank.basiclib.ext.CompatFragment;
-import com.rank.basiclib.annotations.BindDepend;
+import com.rank.binddepend_annotation.BindDepend;
+import com.rank.basiclib.Constant.ClassType.FRAGMENT;
 <#if (needModel)>
 import ${modelPackageName}.${viewModelClass};
 import androidx.lifecycle.ViewModelProvider;
@@ -21,7 +21,7 @@ import androidx.lifecycle.ViewModelProviders;
 <#if needRouter>
 @Route(path = "${RouterName}")
 </#if>
-@BindDepend(Constant.ClassType.FRAGMENT)
+@BindDepend(FRAGMENT)
 class ${fragmentName} extends CompatFragment<${dataBindingName}>() implements Injectable {
     
     <#if (needModel)>

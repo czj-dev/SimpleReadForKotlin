@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <#import "root://activities/common/kotlin_macros.ftl" as kt>
 <recipe>
-<@kt.addAllKotlinDependencies />
+<#--  <@kt.addAllKotlinDependencies />  -->
 <#if needActivity>
     <merge from="root/AndroidManifest.xml.ftl"
            to="${escapeXmlAttribute(manifestOut)}/AndroidManifest.xml" />
@@ -32,5 +32,12 @@
 <#if needModel>
     <instantiate from="root/src/app_package/ViewModel.${ktOrJavaExt}.ftl"
                    to="${projectOut}/src/main/java/${slashedPackageName(modelPackageName)}/${pageName}ViewModel.${ktOrJavaExt}" />
+    <open file="${projectOut}/src/main/java/${slashedPackageName(modelPackageName)}/${pageName}ViewModel.${ktOrJavaExt}" />
+</#if>
+
+<#if needRepository>
+    <instantiate from="root/src/app_package/Repository.${ktOrJavaExt}.ftl"
+                   to="${projectOut}/src/main/java/${slashedPackageName(repositoryPackageName)}/${pageName}Repository.${ktOrJavaExt}" />
+    <open file="${projectOut}/src/main/java/${slashedPackageName(repositoryPackageName)}/${pageName}Repository.${ktOrJavaExt}" />
 </#if>
 </recipe>

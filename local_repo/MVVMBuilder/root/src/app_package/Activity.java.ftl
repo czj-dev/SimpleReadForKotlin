@@ -4,11 +4,11 @@
 package ${ativityPackageName};
 
 import javax.inject.Inject;
-import com.rank.basiclib.Constant;
 import com.rank.basiclib.di.Injectable;
 import com.rank.basiclib.ext.CompatActivity;
-import com.rank.basiclib.annotations.BindDepend;
+import com.rank.binddepend_annotation.BindDepend;
 import ${packageName}.databinding.${dataBindingName};
+import com.rank.basiclib.Constant.ClassType.ACTIVITY;
 <#if needRouter>
 import com.alibaba.android.arouter.facade.annotation.Route;
 </#if>
@@ -23,7 +23,7 @@ import ${packageName}.R;
 <#if needRouter>
 @Route(path = "${RouterName}")
 </#if>
-@BindDepend(Constant.ClassType.ACTIVITY)
+@BindDepend(ACTIVITY)
 public class  ${activityClass}  extends CompatActivity<${dataBindingName}> implements Injectable {
 
 <#if (needModel)>

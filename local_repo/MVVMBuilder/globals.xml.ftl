@@ -7,8 +7,10 @@
     <global id="generateActivityTitle" type="boolean" value="false" />
     <global id="relativePackage" value="${ativityPackageName}" />
     <global id="activityClass" value="${pageName}Activity" />
-    <global id="diPath" value="${packageName}.di" />
+    <global id="activityLayoutName" value="${resourcePrefix}${activityLayoutResouce}" />
+    <global id="fragmentLayoutName" value="${resourcePrefix}${fragmentLayoutResouce}" />
     <global id="viewModelClass" value="${pageName}ViewModel" />
+    <global id="repositoryClass" value="${pageName}Repository" />
     <#include "../common/common_globals.xml.ftl" />
 </globals>
 
