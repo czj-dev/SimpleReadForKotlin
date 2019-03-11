@@ -13,6 +13,6 @@ public class Constant {
     public static class ClassType {
         public static final int ACTIVITY = 0;
         public static final int FRAGMENT = 1;
-        public static final int VIEW_MODEl = 1;
+        public static final int VIEWMODEl = 2;
     }
 }

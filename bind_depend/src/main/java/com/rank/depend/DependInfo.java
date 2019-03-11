@@ -48,7 +48,7 @@ class DependInfo {
         builder.append('\n');
         builder.append("@Module");
         builder.append('\n');
-        builder.append("abstract class ").append(getProxyClassName(buildType));
+        builder.append("public abstract class ").append(getProxyClassName(buildType));
         builder.append("{");
         return builder.toString();
     }
@@ -69,6 +69,7 @@ class DependInfo {
                 break;
             case VIEW_MODEL:
                 builder.append("import com.rank.basiclib.di.ViewModelKey;").append("\n");
+                builder.append("import androidx.lifecycle.ViewModel;").append("\n");
                 builder.append("import dagger.Module;").append("\n");
                 builder.append("import dagger.Binds;").append("\n");
                 builder.append("import dagger.multibindings.IntoMap;").append("\n");
@@ -89,7 +90,7 @@ class DependInfo {
                 builder.append("\n@Binds");
                 builder.append("\n@IntoMap");
                 builder.append(String.format("\n@ViewModelKey(%s.class)", className));
-                builder.append(String.format("\nabstract %s bind", className))
+                builder.append("\nabstract ViewModel bind")
                         .append(className)
                         .append(String.format("(%s viewModel);\n", className));
                 break;
@@ -108,7 +109,7 @@ class DependInfo {
         final String[] packages = packageName.split("\\.");
         String header;
         if (packages.length >= 3) {
-            header = packages[0] + "." + packages[1]+ "."  + packages[2];
+            header = packages[0] + "." + packages[1] + "." + packages[2];
         } else {
             header = packageName;
         }
