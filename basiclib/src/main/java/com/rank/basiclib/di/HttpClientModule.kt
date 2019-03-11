@@ -3,6 +3,7 @@ package com.rank.basiclib.di
 import com.rank.basiclib.log.GlobalHttpHandler
 import dagger.Module
 import dagger.Provides
+import me.jessyan.retrofiturlmanager.RetrofitUrlManager
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
@@ -24,7 +25,21 @@ class HttpClientModule {
 
     companion object {
         const val TIME_OUT = 30L
-        const val BASE_URL = "http://gank.io/api/"
+    }
+
+    /**
+     * 域名表
+     */
+    enum class DOMAIN(val named: String, val domain: String) {
+        GANK(DOMAIN.NAME_GANK, DOMAIN.URL_GANK),
+        WANANDROID(DOMAIN.NAME_WANANDROID, DOMAIN.URL_WAN_ANDROID);
+
+        companion object {
+            const val NAME_WANANDROID = "wanandroid"
+            const val NAME_GANK = "gank"
+            const val URL_WAN_ANDROID = "https://www.wanandroid.com/"
+            const val URL_GANK = "http://gank.io/api/"
+        }
     }
 
 
@@ -49,7 +64,11 @@ class HttpClientModule {
         builder.addConverterFactory(GsonConverterFactory.create())
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .client(okHttpClient)
-                .baseUrl(BASE_URL)
+                .baseUrl(DOMAIN.GANK.domain)
+        val urlManager = RetrofitUrlManager.getInstance()
+        urlManager.setGlobalDomain(DOMAIN.GANK.domain)
+        urlManager.putDomain(DOMAIN.GANK.named, DOMAIN.GANK.domain)
+        urlManager.putDomain(DOMAIN.WANANDROID.named, DOMAIN.WANANDROID.domain)
         return builder.build()
     }
 
