@@ -10,10 +10,12 @@ import com.rank.basiclib.ext.CompatActivity
 import com.rank.gank.R
 import com.rank.gank.databinding.GankActivityHomeBinding
 import com.rank.gank.viewmodel.HomeActivityViewModel
+import com.rank.service.Router.Gank.HOME
+import com.rank.service.Router.Gank.PHOTO
 import javax.inject.Inject
 
 
-@Route(path = "/gank/home")
+@Route(path = HOME)
 class GankHomeActivity : CompatActivity<GankActivityHomeBinding>(), Injectable {
 
     override val layoutId = R.layout.gank_activity_home
@@ -24,7 +26,7 @@ class GankHomeActivity : CompatActivity<GankActivityHomeBinding>(), Injectable {
     private val viewModel by lazy { ViewModelProviders.of(this, viewModelFactory).get(HomeActivityViewModel::class.java) }
 
     override fun initViews() {
-        val fragment = ARouter.getInstance().build("/gank/photo").navigation() as Fragment
+        val fragment = ARouter.getInstance().build(PHOTO).navigation() as Fragment
         supportFragmentManager.beginTransaction().replace(R.id.container, fragment).commitAllowingStateLoss()
         setSupportActionBar(binding.toolbar)
     }

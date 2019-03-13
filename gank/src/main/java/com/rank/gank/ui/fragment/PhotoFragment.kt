@@ -22,6 +22,7 @@ import com.rank.gank.databinding.GankFragmentPhotoBinding
 import com.rank.gank.databinding.GankGirlPhotoItemBinding
 import com.rank.gank.viewmodel.PhotoViewModel
 import com.rank.gank.vo.GirlPhoto
+import com.rank.service.Router.Gank.PHOTO
 import com.trello.rxlifecycle3.android.lifecycle.kotlin.bindToLifecycle
 import javax.inject.Inject
 
@@ -32,7 +33,7 @@ import javax.inject.Inject
  * Created by MVVMTemplate on 02/12/2019 14:42
  * ================================================
  */
-@Route(path = "/gank/photo")
+@Route(path = PHOTO)
 class PhotoFragment : CompatFragment<GankFragmentPhotoBinding>(), Injectable {
 
     @Inject
@@ -58,7 +59,7 @@ class PhotoFragment : CompatFragment<GankFragmentPhotoBinding>(), Injectable {
         }
         viewModel.loadList()
                 .bindToLifecycle(this)
-                .subscribe { adapter.setNewData(it) }
+                .subscribe(adapter::setNewData)
         setHasOptionsMenu(true)
     }
 

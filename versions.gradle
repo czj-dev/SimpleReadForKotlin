@@ -72,6 +72,7 @@ versions.databinding = "3.3.0"
 versions.rx_lifecycle = "3.0.0"
 versions.router_api = "1.4.1"
 versions.router_compiler = "1.2.2"
+versions.router_register = "1.0.2"
 versions.rxbinding = "3.0.0-alpha2"
 def deps = [:]
 
@@ -251,6 +252,7 @@ deps.rx = rx
 
 def router = [:]
 router.api = "com.alibaba:arouter-api:$versions.router_api"
+router.register = "com.alibaba:arouter-register:$versions.router_register"
 router.compiler = "com.alibaba:arouter-compiler:$versions.router_compiler"
 deps.router = router
 
