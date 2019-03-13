@@ -3,8 +3,7 @@
           package="com.rank.wanandroid">
 
     <application>
-        <activity android:name=".ui.activity.AndroidHomeActivity">
-        </activity>
+        <activity android:name=".ui.activity.AndroidHomeActivity"/>
     </application>
 
 </manifest>
