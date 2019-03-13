@@ -9,6 +9,7 @@ package com.rank.basiclib;
  * </pre>
  */
 public class Constant {
+    public static final Object Any = new Object();
 
     public static class ClassType {
         public static final int ACTIVITY = 0;

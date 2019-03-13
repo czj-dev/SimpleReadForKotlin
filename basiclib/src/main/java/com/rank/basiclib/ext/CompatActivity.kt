@@ -37,7 +37,7 @@ abstract class CompatActivity<B : ViewDataBinding> : AppCompatActivity() {
     private fun initViewBinding() {
         binding = DataBindingUtil.setContentView(this, layoutId, ActivityDataBindingComponent(this))
         with(binding) {
-            setLifecycleOwner(this@CompatActivity)
+            lifecycleOwner = this@CompatActivity
         }
     }
 

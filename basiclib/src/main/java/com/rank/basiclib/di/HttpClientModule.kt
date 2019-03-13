@@ -54,7 +54,17 @@ class HttpClientModule {
         for (interceptor in interceptors) {
             client.addInterceptor(interceptor)
         }
+        configNetworkRequestBaseUrl(client)
         return client.build()
+    }
+
+    private fun configNetworkRequestBaseUrl(client: OkHttpClient.Builder) {
+        RetrofitUrlManager.getInstance().apply {
+            setGlobalDomain(DOMAIN.GANK.domain)
+            putDomain(DOMAIN.GANK.named, DOMAIN.GANK.domain)
+            putDomain(DOMAIN.WANANDROID.named, DOMAIN.WANANDROID.domain)
+            with(client)
+        }
     }
 
     @Provides
@@ -65,10 +75,6 @@ class HttpClientModule {
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .client(okHttpClient)
                 .baseUrl(DOMAIN.GANK.domain)
-        val urlManager = RetrofitUrlManager.getInstance()
-        urlManager.setGlobalDomain(DOMAIN.GANK.domain)
-        urlManager.putDomain(DOMAIN.GANK.named, DOMAIN.GANK.domain)
-        urlManager.putDomain(DOMAIN.WANANDROID.named, DOMAIN.WANANDROID.domain)
         return builder.build()
     }
 
