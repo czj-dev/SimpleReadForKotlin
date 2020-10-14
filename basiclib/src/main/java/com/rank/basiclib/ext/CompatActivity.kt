@@ -6,7 +6,8 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
-import com.noober.background.BackgroundLibrary
+import com.gyf.immersionbar.ImmersionBar
+import com.rank.basiclib.R
 import com.rank.basiclib.binding.ActivityDataBindingComponent
 
 
@@ -27,7 +28,6 @@ abstract class CompatActivity<B : ViewDataBinding> : AppCompatActivity() {
     abstract val layoutId: Int
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        BackgroundLibrary.inject(this)
         super.onCreate(savedInstanceState)
         initViewBinding()
         initViews()
@@ -39,7 +39,22 @@ abstract class CompatActivity<B : ViewDataBinding> : AppCompatActivity() {
         with(binding) {
             lifecycleOwner = this@CompatActivity
         }
+        if (findViewById<View>(R.id.statusView) != null) {
+            val immersionBar = ImmersionBar.with(this)
+            immersionBar.statusBarDarkFont(true)
+                .statusBarView(R.id.statusView)
+                .init()
+        }
     }
+
+    override fun onResume() {
+        super.onResume()
+    }
+
+    override fun onStop() {
+        super.onStop()
+    }
+
 
     abstract fun initViews()
 
@@ -47,8 +62,11 @@ abstract class CompatActivity<B : ViewDataBinding> : AppCompatActivity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        for (f in supportFragmentManager.fragments) {
-            f.onActivityResult(requestCode, resultCode, data)
-        }
+//        for (f in supportFragmentManager.fragments) {
+//            if (f == null) {
+//                continue
+//            }
+//            f.onActivityResult(requestCode, resultCode, data)
+//        }
     }
 }

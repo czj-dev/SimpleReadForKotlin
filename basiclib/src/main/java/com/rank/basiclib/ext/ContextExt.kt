@@ -1,9 +1,5 @@
 package com.rank.basiclib.ext
 
-import android.content.Context
-import com.rank.basiclib.application.BaseApplication
-import com.rank.basiclib.di.AppComponent
-
 /**
  * <pre>
  *     author: ChenZhaoJun
@@ -12,8 +8,3 @@ import com.rank.basiclib.di.AppComponent
  *     desc  :
  * </pre>
  */
-
-fun Context.appComponent(): AppComponent {
-    val baseApplication = this.applicationContext as BaseApplication
-    return baseApplication.appComponent
-}

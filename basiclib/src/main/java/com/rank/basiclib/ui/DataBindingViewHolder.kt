@@ -14,10 +14,13 @@ import com.chad.library.adapter.base.BaseViewHolder
  *     desc  :
  * </pre>
  */
-class DataBindingViewHolder<DB : ViewDataBinding>(
-        val view: View,
-        private val dataBindingComponent: DataBindingComponent?
+class DataBindingViewHolder<DB : ViewDataBinding, T :Any>(
+    val view: View,
+    private val dataBindingComponent: DataBindingComponent?,
+    private val adapter: DataBindingAdapter<T, DB>
 ) : BaseViewHolder(view) {
+
+    fun adapter(): DataBindingAdapter<T, DB> = adapter
 
     fun binding(): DB {
         return if (dataBindingComponent != null)

@@ -7,7 +7,6 @@ buildscript {
         classpath deps.android_gradle_plugin
         classpath deps.kotlin.plugin
         classpath deps.component
-        classpath deps.bugly.tinker_support
         classpath deps.router.register
     }
 }

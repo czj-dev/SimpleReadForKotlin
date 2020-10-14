@@ -2,6 +2,7 @@ apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
+apply from: "../androidMavenPush.gradle"
 
 android {
     compileSdkVersion build_versions.target_sdk
@@ -30,77 +31,90 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-
+    repositories {
+        flatDir {
+            dirs 'libs'
+        }
+    }
+    lintOptions {
+        abortOnError false
+    }
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
     api deps.constraint_layout
     api deps.support.compat
     api deps.support.recyclerview
     api deps.support.cardview
     api deps.support.design
-
+    api deps.support.core
+    api deps.support.coreKtx
     api deps.kotlin.stdlib
     api deps.kotlin.coroutines
     api deps.kotlin.coroutines_android
-    api deps.coreKtx
-
     api deps.lifecycle.runtime
     api deps.lifecycle.extensions
     api deps.lifecycle.viewmodel
-    api deps.lifecycle.extensions
-
-    kapt deps.room.compiler
-    api deps.room.runtime
-
     api deps.retrofit.runtime
     api deps.retrofit.gson
     api deps.retrofit.rx_adapter
     api deps.retrofit.url_manager
-
     api deps.rx.core
     api deps.rx.android
     api deps.rx.kotlin
     api deps.rx.permissions
-
     api deps.rx.lifecycle_core
     api deps.rx.lifecycle_android
     api deps.rx.lifecycle_android_provider
     api deps.rx.lifecycle_kotlin
-
     api deps.rx.binding_appcompat
     api deps.rx.binding_viewpager
     api deps.rx.binding_swiperefreshlayout
     api deps.rx.binding_recyclerview
-
     api deps.adapterHelper
-
     api deps.timber
-
     kapt deps.dagger.android_support_compiler
     kapt deps.dagger.compiler
     api deps.dagger.runtime
     api deps.dagger.android
     api deps.dagger.android_support
-
     api deps.glide.runtime
     kapt deps.glide.compiler
-
-    kapt deps.data.service
-    api deps.data.service
-
     api deps.router.api
-
     api deps.componentlib
-
-    api deps.shape
     api deps.status_bar
-
     api deps.bugly.tinker
     api deps.bugly.upgrade
-    api project(':binddepend_annotation')
+    api deps.stetho.core
+    api deps.stetho.okhttp
+    api deps.fileprovider
+    api deps.oss
+    api deps.luban
+    api deps.refresh.layout
+    api deps.refresh.header
+    api deps.thirdUi.banner
+    api deps.thirdUi.pickView
+    api deps.thirdUi.ucrop
+    api deps.thirdUi.skeleton
+    api deps.thirdUi.shimmer
+    api deps.thirdUi.recycler_banner
+    api deps.thirdUi.tab
+    api deps.autoSize
+    api deps.popup
+//    api(deps.nativeRepo.udesk, {
+//        exclude group: 'com.tencent.bugly', module: 'crashreport'
+//    })
+    api('com.alibaba.android:vlayout:1.2.8@aar') {
+        transitive = true
+    }
+    api deps.nativeRepo.bind_depend_annotation
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+    api deps.zxing
+    api deps.map.location
+
+    debugApi 'com.didichuxing.doraemonkit:doraemonkit:1.2.1'
+    releaseApi 'com.didichuxing.doraemonkit:doraemonkit-no-op:1.2.0'
 }

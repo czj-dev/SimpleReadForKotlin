@@ -39,7 +39,11 @@ object AppInjector {
                 handleActivity(activity)
             }
 
-            override fun onActivityStarted(activity: Activity) {
+            override fun onActivityStarted(activity:  /**
+             * warehouseId : 1
+             * warehouseName : jxq
+             * warehouseCode : jxq
+             */ Activity) {
 
             }
 

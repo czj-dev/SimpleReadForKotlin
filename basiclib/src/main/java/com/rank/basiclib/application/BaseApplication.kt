@@ -3,20 +3,27 @@ package com.rank.basiclib.application
 import android.app.Activity
 import android.app.Application
 import android.content.Context
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
-import androidx.multidex.MultiDex
+//import androidx.multidex.MultiDex
 import com.alibaba.android.arouter.launcher.ARouter
-import com.rank.basiclib.BuildConfig
+import com.didichuxing.doraemonkit.DoraemonKit
+import com.facebook.stetho.Stetho
+import com.rank.basiclib.binding.DefaultAdapters
 import com.rank.basiclib.di.*
 import com.rank.basiclib.error.ExceptionHandleFactory
+import com.rank.basiclib.ext.debug
 import com.rank.basiclib.log.GlobalHttpHandler
+import com.rank.basiclib.log.RequestInterceptor
+import com.rank.basiclib.utils.Utils
 import com.rank.basiclib.utils.ViewUtils
 import com.tencent.bugly.Bugly
 import com.tencent.bugly.beta.Beta
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasActivityInjector
 import dagger.android.support.HasSupportFragmentInjector
+import me.jessyan.autosize.AutoSizeConfig
 import okhttp3.Interceptor
 import okhttp3.Request
 import okhttp3.Response
@@ -54,8 +61,8 @@ open class BaseApplication : Application(), HasActivityInjector, HasSupportFragm
 
     override fun attachBaseContext(base: Context?) {
         super.attachBaseContext(base)
-        MultiDex.install(base)
-        Beta.installTinker()
+//        MultiDex.install(base)
+//        Beta.installTinker()
         //通过 ServiceLoader 来装载各个 Module 的 AppLifecycle
         appLifecycle = ServiceLoader.load(AppLifecycle::class.java)
         for (appLifecycleObservable in appLifecycle) {
@@ -65,15 +72,27 @@ open class BaseApplication : Application(), HasActivityInjector, HasSupportFragm
 
     override fun onCreate() {
         super.onCreate()
-        Bugly.init(this, "566ad11e23", true)
+        ViewUtils.app = this
+        Utils.init(this)
         val environmentModule = EnvironmentModule()
         environmentModule.handler = globalHttpHandler
         environmentModule.serviceErrorHandlers = arrayListOf()
-        environmentModule.serviceErrorHandlers.addAll(appLifecycle)
-
+        environmentModule.interceptors = arrayListOf()
+        environmentModule.interceptors.add(RequestInterceptor(globalHttpHandler))
         appComponent = AppInjector.init(this, environmentModule)
         val injectUtils = AndroidInjectorUtils()
         for (appLifecycleObservable in appLifecycle) {
+            appLifecycleObservable.providerConfig().apply {
+                this.httpInterceptor?.run {
+                    environmentModule.interceptors.addAll(this)
+                }
+                this.handlerServiceError.run {
+                    environmentModule.serviceErrorHandlers.add(this)
+                }
+                if (this.authenticator != null) {
+                    environmentModule.authenticator = this.authenticator
+                }
+            }
 
             appLifecycleObservable.onCreate(this)
 
@@ -82,7 +101,10 @@ open class BaseApplication : Application(), HasActivityInjector, HasSupportFragm
             this.viewModels.putAll(moduleViewModels)
 
             //获取当前注册的视图组件中注入总Component
-            injectUtils.putAll(appLifecycleObservable.classKeyedInjectorFactories(), appLifecycleObservable.stringKeyedInjectorFactories())
+            injectUtils.putAll(
+                appLifecycleObservable.classKeyedInjectorFactories(),
+                appLifecycleObservable.stringKeyedInjectorFactories()
+            )
 
         }
 
@@ -95,19 +117,40 @@ open class BaseApplication : Application(), HasActivityInjector, HasSupportFragm
         //将注入的 Fragment 放置插件中等待被调起
         fragmentDispatchingAndroidInjector = injectUtils.get()
 
-        initARouter()
         registerActivityLifecycleCallbacks(activityLifecycleCallbacks)
-        ViewUtils.app = this
-        //Timber初始化
-        Timber.plant(Timber.DebugTree())
+        ARouter.init(this)
+        Bugly.init(this, "a9c7ec9ea0", true)
+        AutoSizeConfig.getInstance()
+            .setLog(debug())
+            .init(this)
+            .setUseDeviceSize(false)
+            .setCustomFragment(true)
+            .setExcludeFontScale(true)
+            .setDesignHeightInDp(DESIGN_HEIGHT)
+            .setDesignWidthInDp(DESIGN_WIDTH)
+        DataBindingUtil.setDefaultComponent(DefaultAdapters.defaultComponent())
+        buildConfig(debug(), debugConfig(), releaseConfig())
     }
 
-    private fun initARouter() {
-        if (BuildConfig.DEBUG) {
-            ARouter.openLog()
-            ARouter.openDebug()
+    private fun releaseConfig(): () -> Unit = {
+
+    }
+
+    private fun debugConfig(): () -> Unit = {
+        //Timber初始化
+        Timber.plant(Timber.DebugTree())
+        ARouter.openLog()
+        ARouter.openDebug()
+        Stetho.initializeWithDefaults(this)
+        DoraemonKit.install(this)
+    }
+
+    private fun buildConfig(isDebug: Boolean, debugFunction: () -> Unit, releaseFunction: () -> Unit) {
+        if (isDebug) {
+            debugFunction()
+        } else {
+            releaseFunction()
         }
-        ARouter.init(this)
     }
 
     override fun activityInjector() = dispatchingAndroidInjector
@@ -129,7 +172,7 @@ open class BaseApplication : Application(), HasActivityInjector, HasSupportFragm
         override fun onHttpResultResponse(httpResult: String?, chain: Interceptor.Chain, response: Response): Response {
             var cResponse: Response = response
             for (appLifecycleObservable in appLifecycle) {
-                cResponse = appLifecycleObservable.onHttpResultResponse(httpResult, chain, cResponse)
+                cResponse = appLifecycleObservable.providerConfig().onHttpResultResponse(httpResult, chain, cResponse)
             }
             return cResponse
         }
@@ -137,10 +180,16 @@ open class BaseApplication : Application(), HasActivityInjector, HasSupportFragm
         override fun onHttpRequestBefore(chain: Interceptor.Chain, request: Request): Request {
             var cRequest: Request = request
             for (appLifecycleObservable in appLifecycle) {
-                cRequest = appLifecycleObservable.onHttpRequestBefore(chain, cRequest)
+                cRequest = appLifecycleObservable.providerConfig().onHttpRequestBefore(chain, cRequest)
             }
             return cRequest
         }
+    }
+
+    companion object {
+        //设计稿 iphone6 的宽高尺寸
+        const val DESIGN_HEIGHT = 667
+        const val DESIGN_WIDTH = 375
     }
 
 }

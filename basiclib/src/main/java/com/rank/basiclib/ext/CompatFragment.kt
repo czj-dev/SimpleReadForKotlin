@@ -28,9 +28,16 @@ abstract class CompatFragment<B : ViewDataBinding> : Fragment() {
 
     abstract val layoutId: Int
 
+    protected var viewIsVisible = false
+
+
     protected fun lazyLoad() = false
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         rootView = LayoutInflater.from(context).inflate(layoutId, container, false)
         return rootView
     }
@@ -39,7 +46,7 @@ abstract class CompatFragment<B : ViewDataBinding> : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         binding = DataBindingUtil.bind(rootView, FragmentDataBindingComponent(this))!!
         with(binding) {
-            setLifecycleOwner(this@CompatFragment)
+            lifecycleOwner = this@CompatFragment
         }
         if (!lazyLoad()) {
             initViews()
@@ -60,8 +67,10 @@ abstract class CompatFragment<B : ViewDataBinding> : Fragment() {
     override fun setUserVisibleHint(isVisibleToUser: Boolean) {
         super.setUserVisibleHint(isVisibleToUser)
         if (userVisibleHint) {
+            viewIsVisible = true
             onVisible()
         } else {
+            viewIsVisible = false
             onInvisible()
         }
     }
@@ -75,10 +84,11 @@ abstract class CompatFragment<B : ViewDataBinding> : Fragment() {
      */
     override fun onHiddenChanged(hidden: Boolean) {
         super.onHiddenChanged(hidden)
-        super.onHiddenChanged(hidden)
         if (!hidden) {
+            viewIsVisible = true
             onVisible()
         } else {
+            viewIsVisible = false
             onInvisible()
         }
     }
@@ -86,14 +96,14 @@ abstract class CompatFragment<B : ViewDataBinding> : Fragment() {
     /**
      * 当 Fragment 没有显示在界面上时会回调此方法
      */
-    private fun onInvisible() {
+    open fun onInvisible() {
 
     }
 
     /**
      * 当 Fragment 显示在界面上的时候会回调此方法
      */
-    private fun onVisible() {
+    open fun onVisible() {
         if (lazyLoad() && isFirstLoad) {
             isFirstLoad = false
             initViews()

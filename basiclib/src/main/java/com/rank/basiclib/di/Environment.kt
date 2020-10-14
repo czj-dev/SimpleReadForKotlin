@@ -3,9 +3,9 @@ package com.rank.basiclib.di
 import androidx.lifecycle.ViewModelProvider
 import com.rank.basiclib.error.ServiceErrorHandler
 import com.rank.basiclib.log.GlobalHttpHandler
-import com.rank.basiclib.log.RequestInterceptor
 import dagger.Module
 import dagger.Provides
+import okhttp3.Authenticator
 import okhttp3.Interceptor
 import javax.inject.Singleton
 
@@ -22,7 +22,8 @@ class EnvironmentModule {
     lateinit var factory: ViewModelProvider.Factory
     lateinit var handler: GlobalHttpHandler
     lateinit var serviceErrorHandlers: MutableList<ServiceErrorHandler>
-
+    lateinit var interceptors: ArrayList<Interceptor>
+    var authenticator: Authenticator? = null
 
     @Singleton
     @Provides
@@ -38,7 +39,9 @@ class EnvironmentModule {
 
     @Provides
     @Singleton
-    fun providerInterceptor(handler: GlobalHttpHandler): ArrayList<Interceptor> {
-        return arrayListOf(RequestInterceptor(handler))
-    }
+    fun providerInterceptor(handler: GlobalHttpHandler) = interceptors
+
+    @Provides
+    @Singleton
+    fun providerAuthenticator(): Authenticator? = authenticator
 }

@@ -10,7 +10,7 @@ package com.rank.basiclib;
  */
 public class Constant {
     public static final Object Any = new Object();
-
+    public static final String TAG = "Constant";
     public static class ClassType {
         public static final int ACTIVITY = 0;
         public static final int FRAGMENT = 1;

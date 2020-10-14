@@ -3,8 +3,7 @@ package com.rank.basiclib.application
 import android.content.Context
 import androidx.annotation.NonNull
 import androidx.lifecycle.ViewModel
-import com.rank.basiclib.error.ServiceErrorHandler
-import com.rank.basiclib.log.GlobalHttpHandler
+import com.rank.basiclib.di.GlobalConfig
 import dagger.android.AndroidInjector
 import javax.inject.Provider
 
@@ -16,7 +15,7 @@ import javax.inject.Provider
  *     desc  :
  * </pre>
  */
-interface AppLifecycle : GlobalHttpHandler, ServiceErrorHandler {
+interface AppLifecycle {
 
     fun attachBaseContext(@NonNull base: Context)
 
@@ -43,4 +42,5 @@ interface AppLifecycle : GlobalHttpHandler, ServiceErrorHandler {
      */
     fun stringKeyedInjectorFactories(): Map<String, Provider<AndroidInjector.Factory<*>>>
 
+    fun providerConfig(): GlobalConfig
 }

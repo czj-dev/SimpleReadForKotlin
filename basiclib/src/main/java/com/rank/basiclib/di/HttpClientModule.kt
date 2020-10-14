@@ -1,9 +1,16 @@
 package com.rank.basiclib.di
 
+import com.facebook.stetho.okhttp3.StethoInterceptor
+import com.rank.basiclib.application.AppExecutors
+import com.rank.basiclib.data.CurrentUserType
+import com.rank.basiclib.data.Domain
+import com.rank.basiclib.ext.debug
+import com.rank.basiclib.http.SSLSocketClient
 import com.rank.basiclib.log.GlobalHttpHandler
 import dagger.Module
 import dagger.Provides
 import me.jessyan.retrofiturlmanager.RetrofitUrlManager
+import okhttp3.Authenticator
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
@@ -20,49 +27,43 @@ import javax.inject.Singleton
  *     desc  :
  * </pre>
  */
-@Module()
+@Module
 class HttpClientModule {
 
     companion object {
         const val TIME_OUT = 30L
     }
 
-    /**
-     * 域名表
-     */
-    enum class DOMAIN(val named: String, val domain: String) {
-        GANK(DOMAIN.NAME_GANK, DOMAIN.URL_GANK),
-        WANANDROID(DOMAIN.NAME_WANANDROID, DOMAIN.URL_WAN_ANDROID);
-
-        companion object {
-            const val NAME_WANANDROID = "wanandroid"
-            const val NAME_GANK = "gank"
-            const val URL_WAN_ANDROID = "https://www.wanandroid.com/"
-            const val URL_GANK = "http://gank.io/api/"
-        }
-    }
 
 
     @Provides
     @Singleton
-    fun providerClient(interceptors: ArrayList<Interceptor>, handle: GlobalHttpHandler): OkHttpClient {
+    fun providerClient(interceptors: ArrayList<Interceptor>, handle: GlobalHttpHandler,authenticator: Authenticator?): OkHttpClient {
         val client = OkHttpClient.Builder()
         client.connectTimeout(TIME_OUT, TimeUnit.SECONDS)
-                .readTimeout(TIME_OUT, TimeUnit.SECONDS)
-                .addInterceptor { chain: Interceptor.Chain -> chain.proceed(handle.onHttpRequestBefore(chain, chain.request())) }
-
+            .readTimeout(TIME_OUT, TimeUnit.SECONDS)
+            .addNetworkInterceptor(StethoInterceptor())
+            .addInterceptor { chain: Interceptor.Chain ->
+                chain.proceed(
+                    handle.onHttpRequestBefore(chain, chain.request())
+                )
+            }
         for (interceptor in interceptors) {
             client.addInterceptor(interceptor)
         }
-        configNetworkRequestBaseUrl(client)
+        if (authenticator != null) {
+            client.authenticator(authenticator)
+        }
+        if (debug()) {
+            client.sslSocketFactory(SSLSocketClient.getSSLSocketFactory())
+            client.hostnameVerifier(SSLSocketClient.getHostnameVerifier())
+        }
         return client.build()
     }
 
     private fun configNetworkRequestBaseUrl(client: OkHttpClient.Builder) {
         RetrofitUrlManager.getInstance().apply {
-            setGlobalDomain(DOMAIN.GANK.domain)
-            putDomain(DOMAIN.GANK.named, DOMAIN.GANK.domain)
-            putDomain(DOMAIN.WANANDROID.named, DOMAIN.WANANDROID.domain)
+            setGlobalDomain(Domain.RELEASE.apiUrl)
             with(client)
         }
     }
@@ -72,9 +73,9 @@ class HttpClientModule {
     fun providerRetrofit(okHttpClient: OkHttpClient): Retrofit {
         val builder = Retrofit.Builder()
         builder.addConverterFactory(GsonConverterFactory.create())
-                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                .client(okHttpClient)
-                .baseUrl(DOMAIN.GANK.domain)
+            .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+            .client(okHttpClient)
+            .baseUrl(ApiManager.getInstance().baseUrl)
         return builder.build()
     }
 

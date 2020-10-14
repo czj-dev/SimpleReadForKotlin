@@ -14,18 +14,26 @@ import com.rank.basiclib.binding.BindingComponent
  *     desc  :
  * </pre>
  */
-class DataBindingAdapter<T : Any, DB : ViewDataBinding>(
-        layoutId: Int,
-        private val dataBindingComponent: BindingComponent? = null,
-        private val callback: (T, DB, Int) -> Unit = { _, _, _ -> }) : BaseQuickAdapter<T, DataBindingViewHolder<DB>>(layoutId) {
+open class DataBindingAdapter<T : Any, DB : ViewDataBinding>(
+    layoutId: Int,
+    private val dataBindingComponent: BindingComponent? = null,
+    protected var callback: (T, DataBindingViewHolder<DB, T>, Int) -> Unit = { _, _, _ -> }
+) : BaseQuickAdapter<T, DataBindingViewHolder<DB, T>>(layoutId) {
 
-    override fun convert(helper: DataBindingViewHolder<DB>?, item: T) {
+    override fun convert(helper: DataBindingViewHolder<DB, T>?, item: T) {
         if (helper != null) {
-            callback(item, helper.binding(), helper.adapterPosition)
+            callback(item, helper, helper.adapterPosition)
         }
     }
 
-    override fun createBaseViewHolder(parent: ViewGroup, layoutResId: Int): DataBindingViewHolder<DB> {
-        return DataBindingViewHolder(LayoutInflater.from(parent.context).inflate(layoutResId, parent, false), dataBindingComponent)
+    override fun createBaseViewHolder(
+        parent: ViewGroup,
+        layoutResId: Int
+    ): DataBindingViewHolder<DB, T> {
+        return DataBindingViewHolder(
+            LayoutInflater.from(parent.context).inflate(layoutResId, parent, false),
+            dataBindingComponent,
+            this
+        )
     }
 }

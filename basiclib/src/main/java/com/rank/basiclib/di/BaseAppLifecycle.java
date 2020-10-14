@@ -1,25 +1,16 @@
 package com.rank.basiclib.di;
 
 import android.content.Context;
-
+import androidx.annotation.NonNull;
+import androidx.lifecycle.ViewModel;
 import com.rank.basiclib.application.AppLifecycle;
 import com.rank.basiclib.application.BaseApplication;
-import com.rank.basiclib.error.ServiceException;
-
+import dagger.android.AndroidInjector;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-
-import java.util.Map;
 
 import javax.inject.Inject;
 import javax.inject.Provider;
-
-import androidx.annotation.NonNull;
-import androidx.lifecycle.ViewModel;
-import dagger.android.AndroidInjector;
-import okhttp3.Interceptor;
-import okhttp3.Request;
-import okhttp3.Response;
+import java.util.Map;
 
 /**
  * <pre>
@@ -72,21 +63,12 @@ public abstract class BaseAppLifecycle implements AppLifecycle {
         return stringKeyedInjectorFactories;
     }
 
-    @NotNull
-    @Override
-    public Response onHttpResultResponse(@Nullable String httpResult, @NotNull Interceptor.Chain chain, @NotNull Response response) {
-        return response;
-    }
 
     @NotNull
     @Override
-    public Request onHttpRequestBefore(@NotNull Interceptor.Chain chain, @NotNull Request request) {
-        return request;
+    public GlobalConfig providerConfig() {
+        return new GlobalConfig.Builder().build();
     }
 
-    @Override
-    public boolean handlerServiceException(@NotNull ServiceException t) {
-        return false;
-    }
 }
 

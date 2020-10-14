@@ -12,6 +12,6 @@ package com.rank.basiclib.data
 interface AppResponse<T> {
     fun code(): Int
     fun success(): Boolean
-    fun data(): T
+    fun data(): T?
     fun message(): String?
 }

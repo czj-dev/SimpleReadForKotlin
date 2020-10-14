@@ -1,0 +1,35 @@
+apply plugin: 'com.android.library'
+apply from: "../androidMavenPush.gradle"
+
+android {
+    compileSdkVersion build_versions.target_sdk
+
+
+
+    defaultConfig {
+        minSdkVersion build_versions.min_sdk
+        targetSdkVersion build_versions.target_sdk
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    api 'com.umeng.umsdk:share-core:6.9.6'
+    api 'com.umeng.umsdk:share-wx:6.9.6'
+    implementation 'com.umeng.umsdk:share-sina:6.9.6'
+    api  'com.umeng.umsdk:common:2.0.0'
+    implementation 'com.umeng.sdk:utdid:1.1.5.3'
+    implementation 'com.umeng.sdk:debug:1.0.0'
+    api 'com.umeng.umsdk:analytics:8.0.0'
+}

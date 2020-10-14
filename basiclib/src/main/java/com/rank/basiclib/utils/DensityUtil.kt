@@ -32,6 +32,12 @@ class DensityUtil {
         @JvmStatic
         fun px2dp(value: Float) = value / application().resources.displayMetrics.density + 0.5f
 
+        @JvmStatic
+        fun sp2px(value: Float) = (value * application().resources.displayMetrics.density + 0.5f).toInt()
+
+        @JvmStatic
+        fun screamWidth() = application().resources.displayMetrics.widthPixels
+
         /**
          * 根据屏幕的宽度来动态调整 DisplayMetrics 适配相关的几个变量达到屏幕适配的目的
          */
@@ -49,7 +55,8 @@ class DensityUtil {
     /**
      * 用户字体切换的时候的时候会导致scaleDensity修改，监听字体切换，即使刷新
      */
-    class ScaleDensityComponentCallback(private val application: Application, private var scaleDensity: Float) : ComponentCallbacks {
+    class ScaleDensityComponentCallback(private val application: Application, private var scaleDensity: Float) :
+        ComponentCallbacks {
         override fun onConfigurationChanged(newConfig: Configuration?) {
             if (newConfig != null && newConfig.fontScale > 0) {
                 scaleDensity = application.resources.displayMetrics.scaledDensity

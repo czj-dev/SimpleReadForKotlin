@@ -1,0 +1,58 @@
+apply plugin: 'maven'
+
+
+def configProperties(String tag) {
+    def config
+    if (tag == "root") {
+        config = file('../config.properties')
+    } else {
+        config = file('/gradle.properties')
+    }
+    if (config.canRead()) {
+        Properties properties = new Properties()
+        properties.load(new FileInputStream(config))
+        return properties
+    } else {
+        throw new GradleException("plaese check you config.properties file path. module path:"+tag)
+    }
+}
+
+def MAVEN_USER_NAME = configProperties('root')['mavenUserName'].toString()
+def VERSION_NAME = configProperties('child')['version'].toString()
+def MAVEN_USER_PASSWORD = configProperties('root')['mavenUserPassword'].toString()
+def ARTIFACT_ID = configProperties('child')['artifactId'].toString()
+
+static def isReleaseBuild(String version) {
+    return !version.contains("SNAPSHOT")
+}
+
+def MAVEN_LOCAL_PATH = uri('../local_repo')
+def MAVEN_PATH = isReleaseBuild(VERSION_NAME) ? configProperties('root')['mavenReleasePath'].toString() : configProperties('root')['mavenSnapShotsPath'].toString()
+def GROUP_ID = 'com.enjoycar.android'
+
+uploadArchives() {
+    repositories {
+        mavenDeployer {
+            if (configProperties("child")['build'].toString() == "remoto") {
+                repository(url: MAVEN_PATH) {
+                    authentication(userName: MAVEN_USER_NAME, password: MAVEN_USER_PASSWORD)
+                }
+            } else {
+                repository(url: MAVEN_LOCAL_PATH)
+            }
+
+            pom.project {
+                groupId GROUP_ID
+                artifactId ARTIFACT_ID
+                version VERSION_NAME
+
+                licenses {
+                    license {
+                        name 'The Apache Software License, Version 2.0'
+                        url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                    }
+                }
+            }
+        }
+    }
+}

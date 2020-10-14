@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:tools="http://schemas.android.comGa/tools">
+              xmlns:tools="http://schemas.android.com/tools">
     
     <data>
-    
-        <variable
-            name="viewModel"
-            type="${modelPackageName}.${viewModelClass}"/>
+    <#if (needModel)>
+      <variable
+                name="viewModel"
+                type="${modelPackageName}.${viewModelClass}"/>
+    </#if>
+
     </data>
   
     <LinearLayout 

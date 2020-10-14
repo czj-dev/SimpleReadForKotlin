@@ -4,6 +4,8 @@ import android.app.Application
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.rank.basiclib.application.AppManager
+import com.rank.basiclib.data.CurrentUser
+import com.rank.basiclib.data.CurrentUserType
 import com.rank.basiclib.error.ExceptionHandleFactory
 import com.rank.basiclib.error.ServiceErrorHandler
 import dagger.Module
@@ -18,7 +20,6 @@ import javax.inject.Singleton
  *     desc  :
  * </pre>
  */
-
 @Module
 class DataModule {
 
@@ -36,8 +37,18 @@ class DataModule {
 
     @Singleton
     @Provides
-    fun providerErrorHandler(application: Application, exceptionHandlers: MutableList<ServiceErrorHandler>): ExceptionHandleFactory {
-        return ExceptionHandleFactory.getInstance(application, exceptionHandlers)
+    fun providerErrorHandler(
+        application: Application,
+        exceptionHandlers: MutableList<ServiceErrorHandler>
+    ): ExceptionHandleFactory {
+        ExceptionHandleFactory.init(application, exceptionHandlers)
+        return ExceptionHandleFactory.instance
+    }
+
+    @Singleton
+    @Provides
+    fun providerCurrentUser(application: Application): CurrentUserType {
+        return CurrentUser(application)
     }
 
 }

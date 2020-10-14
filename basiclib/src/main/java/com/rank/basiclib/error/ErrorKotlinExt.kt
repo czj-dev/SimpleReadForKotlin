@@ -15,9 +15,9 @@ import io.reactivex.Observable
 /**
  * 拦截错误
  */
-fun <T : AppResponse<*>> Observable<T>.interceptorError(errorHandler: () -> Unit = {}): Observable<T> = this.compose(ExceptionHandleFactory.interceptorError(errorHandler))
+fun <T : AppResponse<*>> Observable<T>.interceptorError(errorHandler: (e:Throwable) -> Unit = {}): Observable<T> = this.compose(ExceptionHandleFactory.interceptorError(errorHandler))
 
 /**
  * 网络层剥离和错误拦截  AppResponse<T> ——>  T
  */
-fun <T : AppResponse<K>, K> Observable<T>.shelling(errorHandler: () -> Unit = {}): Observable<K> = this.compose(ExceptionHandleFactory.convertData(errorHandler))
+fun <T : AppResponse<K>, K> Observable<T>.shelling(errorHandler: (e:Throwable) -> Unit = {}): Observable<K> = this.compose(ExceptionHandleFactory.convertData(errorHandler))

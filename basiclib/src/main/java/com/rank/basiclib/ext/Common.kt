@@ -1,5 +1,8 @@
 package com.rank.basiclib.ext
 
+import kotlin.contracts.ExperimentalContracts
+import kotlin.contracts.contract
+
 /**
  * <pre>
  *     author: ChenZhaoJun
@@ -8,6 +11,12 @@ package com.rank.basiclib.ext
  *     desc  :
  * </pre>
  */
-class Common {
 
+@ExperimentalContracts
+fun Boolean?.isNullOrEmpty(): Boolean {
+    contract {
+        returns(false) implies (this@isNullOrEmpty != null)
+    }
+
+    return this == null || this
 }

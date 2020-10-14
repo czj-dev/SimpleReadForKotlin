@@ -13,7 +13,7 @@ import timber.log.Timber;
  * ================================================
  * 对 OkHttp 的请求和响应信息进行更规范和清晰的打印, 此类为框架默认实现, 以默认格式打印信息, 若觉得默认打印格式
  * 并不能满足自己的需求, 可自行扩展自己理想的打印格式
- *
+ * <p>
  * Created by JessYan on 25/01/2018 14:51
  * <a href="mailto:jess.yan.effort@gmail.com">Contact me</a>
  * <a href="https://github.com/JessYanCoding">Follow me</a>
@@ -101,7 +101,6 @@ public class DefaultFormatPrinter implements FormatPrinter {
                                   String bodyString, List<String> segments, String message, final String responseUrl) {
         bodyString = RequestInterceptor.isJson(contentType) ? CharacterHandler.jsonFormat(bodyString)
                 : RequestInterceptor.isXml(contentType) ? CharacterHandler.xmlFormat(bodyString) : bodyString;
-
         final String responseBody = LINE_SEPARATOR + BODY_TAG + LINE_SEPARATOR + bodyString;
         final String tag = getTag(false);
         final String[] urlLine = {URL_TAG + responseUrl, N};

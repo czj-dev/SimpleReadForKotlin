@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="RoundRectTextView">
+        <attr name="text_back_ground" format="color"/>
+        <attr name="text_pressedBackground" format="color"/>
+        <attr name="text_rect_radius" format="dimension"/>
+        <attr name="text_leftTopRadius" format="dimension"/>
+        <attr name="text_leftBottomRadius" format="dimension"/>
+        <attr name="text_rightTopRadius" format="dimension"/>
+        <attr name="text_rightBottomRadius" format="dimension"/>
+        <attr name="text_isStroke" format="boolean"/>
+        <attr name="text_width" format="dimension"/>
+    </declare-styleable>
+
+    <declare-styleable name="LineLinearLayout">
+        <attr name="line_color" format="color"/>
+        <attr name="line_padding_left" format="dimension"/>
+        <attr name="line_padding_right" format="dimension"/>
+        <attr name="line_height" format="dimension"/>
+        <attr name="line_leftIcon" format="reference"/>
+        <attr name="line_rightIcon" format="reference"/>
+        <attr name="line_leftIcon_width" format="dimension"/>
+        <attr name="line_leftIcon_height" format="dimension"/>
+        <attr name="line_rightIcon_width" format="dimension"/>
+        <attr name="line_rightIcon_height" format="dimension"/>
+        <attr name="line_visible" format="boolean"/>
+    </declare-styleable>
+    <declare-styleable name="QMUILoadingView">
+        <attr name="qmui_loading_view_size" format="dimension"/>
+        <attr name="qmui_loading_view_color" format="color"/>
+    </declare-styleable>
+    <attr name="QMUILoadingStyle" format="reference"/>
+</resources>

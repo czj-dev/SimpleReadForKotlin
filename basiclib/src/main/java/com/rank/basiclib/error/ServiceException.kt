@@ -11,8 +11,23 @@ import com.rank.basiclib.data.AppResponse
  * </pre>
  */
 
-class ServiceException( val response: AppResponse<*>) : RuntimeException() {
+class ServiceException() : RuntimeException() {
+
+    var response: AppResponse<*>? = null
+    private var errorMessage: String? = null
+    private var errorCode: Int = 0
+
+    constructor(errorMessage: String, errorCode: Int) : this() {
+        this.errorCode = errorCode
+        this.errorMessage = errorMessage
+    }
+
+    constructor (response: AppResponse<*>) : this() {
+        this.response = response
+        this.errorMessage = response.message()
+        this.errorCode = response.code()
+    }
 
     override val message: String
-        get() = response.message() ?: super.message ?: ""
+        get() = errorMessage ?: super.message ?: ""
 }

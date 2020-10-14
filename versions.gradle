@@ -21,8 +21,8 @@
 ext.deps = [:]
 def versions = [:]
 versions.arch_core = "1.1.1"
-versions.room = "2.0.0"
-versions.lifecycle = "1.1.1"
+versions.room = "2.1.0"
+versions.lifecycle = "2.0.0"
 versions.support = "28.0.0"
 versions.dagger = "2.20"
 versions.junit = "4.12"
@@ -34,53 +34,56 @@ versions.apache_commons = "2.5"
 versions.mockito = "2.7.19"
 versions.mockito_all = "1.10.19"
 versions.dexmaker = "2.2.0"
-versions.constraint_layout = "1.1.3"
+versions.constraint_layout = "2.0.0-beta4"
 versions.glide = "4.8.0"
 versions.timber = "4.5.1"
-versions.android_gradle_plugin = '3.3.1'
+versions.android_gradle_plugin = '4.0.0'
 versions.rxjava2 = "2.2.4"
 versions.rx_android = "2.1.0"
 versions.rx_kotlin = "2.2.0"
 versions.atsl_runner = "1.0.1"
 versions.atsl_rules = "1.0.1"
 versions.hamcrest = "1.3"
-versions.kotlin = "1.3.20"
+versions.kotlin = "1.3.41"
 versions.paging = "1.0.1"
 versions.work = "1.0.0-alpha05"
 versions.navigation = "1.0.0-alpha04"
 versions.map_version = "5.2.0"
 versions.location_version = "4.0.1"
-versions.refresh = "1.1.0-alpha-4"
+versions.refresh = "1.1.0-andx-15"
 versions.zixing_lib = "2.2"
-versions.status_bar = "2.3.0"
-versions.permissions = "1.2.0"
+versions.status_bar = "3.0.0-beta01"
 versions.superText = "2.1.7"
-versions.coreKtx = "1.0.0-alpha1"
-versions.compat = "1.0.0"
+versions.core = "1.1.0"
+versions.compat = "1.1.0-rc01"
 versions.adapterHelper = "2.9.45-androidx"
 versions.loading_dialog = "v1.0.4"
-versions.shape = "1.2.3"
+versions.shape = "1.6.2"
 versions.component = "1.3.3"
 versions.gson = "2.8.5"
 versions.kodein = "5.2.0"
 versions.autodispose = "1.1.0"
 versions.permissions = "0.10.2"
 versions.kotlin_coroutines = "1.1.0"
-versions.url_manager = "1.1.0"
+versions.url_manager = "1.2.5"
 versions.auto_service = "1.0-rc4"
 versions.databinding = "3.3.0"
 versions.rx_lifecycle = "3.0.0"
 versions.router_api = "1.4.1"
 versions.router_compiler = "1.2.2"
 versions.router_register = "1.0.2"
+versions.stetho = "1.4.1"
 versions.rxbinding = "3.0.0-alpha2"
+versions.tinker_support = "1.2.0"
 def deps = [:]
 
 def support = [:]
+support.coreKtx = "androidx.core:core-ktx:$versions.core"
+support.core = "androidx.core:core:$versions.core"
 support.annotations = "com.android.support:support-annotations:$versions.support"
 support.app_compat = "com.android.support:appcompat-v7:$versions.support"
 support.compat = "androidx.appcompat:appcompat:$versions.compat"
-support.recyclerview = "com.android.support:recyclerview-v7:$versions.support"
+support.recyclerview = "androidx.recyclerview:recyclerview:$versions.core"
 support.cardview = "com.android.support:cardview-v7:$versions.support"
 support.design = "com.android.support:design:$versions.support"
 support.v4 = "com.android.support:support-v4:$versions.support"
@@ -116,7 +119,6 @@ retrofit.mock = "com.squareup.retrofit2:retrofit-mock:$versions.retrofit"
 retrofit.rx_adapter = "com.squareup.retrofit2:adapter-rxjava2:$versions.retrofit"
 retrofit.url_manager = "me.jessyan:retrofit-url-manager:$versions.url_manager"
 deps.retrofit = retrofit
-
 
 
 def dagger = [:]
@@ -172,9 +174,8 @@ deps.mock_web_server = "com.squareup.okhttp3:mockwebserver:$versions.mockwebserv
 deps.hamcrest = "org.hamcrest:hamcrest-all:$versions.hamcrest"
 deps.android_gradle_plugin = "com.android.tools.build:gradle:$versions.android_gradle_plugin"
 deps.zixing_ext = "cn.yipianfengye.android:zxing-library:$versions.zixing_lib"
-deps.status_bar = "com.gyf.barlibrary:barlibrary:$versions.status_bar"
+deps.status_bar = "com.gyf.immersionbar:immersionbar:$versions.status_bar"
 deps.permissions = "pub.devrel:easypermissions:$versions.permissions"
-deps.coreKtx = "androidx.core:core-ktx:$versions.coreKtx"
 deps.socket = "com.github.vilyever:AndroidSocketClient:$versions.socket"
 deps.adapterHelper = "com.github.CymChad:BaseRecyclerViewAdapterHelper:$versions.adapterHelper"
 deps.shape = "com.noober.background:core:$versions.shape"
@@ -183,16 +184,23 @@ deps.okhttp_logging_interceptor = "com.squareup.okhttp3:logging-interceptor:${ve
 deps.componentlib = "com.github.jimu:componentlib:$versions.component"
 deps.component = "com.build.gradle:module-component:1.0.0"
 deps.paging = "android.arch.paging:runtime:$versions.paging"
+deps.fileprovider = "com.zhy.base:fileprovider:1.0.0"
+deps.oss = "com.aliyun.dpa:oss-android-sdk:2.9.2"
+deps.luban = "top.zibin:Luban:1.1.8"
+deps.jsBridge = "com.github.wendux:DSBridge-Android:3.0-SNAPSHOT"
+deps.autoSize = "me.jessyan:autosize:1.1.2-diy"
+deps.fingerprint = "com.wei.android.lib:fingerprintidentify:1.2.6"
+deps.zxing = "com.google.zxing:core:3.4.0"
+deps.popup = "com.lxj:xpopup:1.9.0"
 ext.deps = deps
-
 
 
 def build_versions = [:]
 build_versions.min_sdk = 19
 build_versions.target_sdk = 28
 build_versions.build_tools = "28.0.3"
-build_versions.code = 22
-build_versions.name = "2.1.0"
+build_versions.code = 40
+build_versions.name = "3.0.0"
 ext.build_versions = build_versions
 
 def work = [:]
@@ -249,7 +257,6 @@ rx.binding_viewpager = "com.jakewharton.rxbinding3:rxbinding-viewpager:$versions
 rx.binding_swiperefreshlayout = "com.jakewharton.rxbinding3:rxbinding-swiperefreshlayout:$versions.rxbinding"
 rx.binding_recyclerview = "com.jakewharton.rxbinding3:rxbinding-recyclerview:$versions.rxbinding"
 deps.rx = rx
-
 def router = [:]
 router.api = "com.alibaba:arouter-api:$versions.router_api"
 router.register = "com.alibaba:arouter-register:$versions.router_register"
@@ -257,22 +264,63 @@ router.compiler = "com.alibaba:arouter-compiler:$versions.router_compiler"
 deps.router = router
 
 def bugly = [:]
-bugly.tinker_support = "com.tencent.bugly:tinker-support:1.1.5"
-bugly.upgrade = "com.tencent.bugly:crashreport_upgrade:1.3.6"
-bugly.tinker = "com.tencent.tinker:tinker-android-lib:1.9.9"
+bugly.tinker_support = "com.tencent.bugly:tinker-support:latest.release"
+bugly.upgrade = "com.tencent.bugly:crashreport_upgrade:1.4.2"
+bugly.tinker = "com.tencent.tinker:tinker-android-lib:1.9.14"
 bugly.crash = "com.tencent.bugly:crashreport:latest.release"
 deps.bugly = bugly
+
+def stetho = [:]
+stetho.core = "com.facebook.stetho:stetho:$versions.stetho"
+stetho.okhttp = "com.facebook.stetho:stetho-okhttp3:$versions.stetho"
+deps.stetho = stetho
+
+def push = [:]
+push.core = "cn.jiguang.sdk:jcore:1.2.7"
+push.android = "cn.jiguang.sdk:jpush:3.2.0"
+deps.push = push
+
+def thirdUi = [:]
+thirdUi.banner = "com.youth.banner:banner:1.4.10"
+thirdUi.pickView = 'com.contrarywind:Android-PickerView:4.1.7'
+thirdUi.ucrop = 'com.github.yalantis:ucrop:2.2.1'
+thirdUi.skeleton = 'com.ethanhua:skeleton:1.1.2'
+thirdUi.shimmer = 'io.supercharge:shimmerlayout:2.1.0'
+thirdUi.recycler_banner = 'com.bigkoo:convenientbanner:2.1.5'
+thirdUi.matisse = 'com.zhihu.android:matisse:0.5.3-beta2'
+thirdUi.tab = 'com.flyco.tablayout:FlycoTabLayout_Lib:2.1.2@aar'
+thirdUi.qmui = 'com.qmuiteam:qmui:2.0.0-alpha08'
+deps.thirdUi = thirdUi
+
+def nativeRepo = [:]
+nativeRepo.share = "com.enjoycar.android:share:1.1.5"
+nativeRepo.basiclib = "com.enjoycar.android:basiclib:1.2.2"
+nativeRepo.basicres = "com.enjoycar.android:basicres:1.2.2"
+nativeRepo.service = "com.enjoycar.android:service:1.2.7"
+nativeRepo.tbs = "com.tencent.tbs.tbssdk:sdk:43697"
+nativeRepo.bind_depend = "com.enjoycar.android:bind_depend:1.0.0"
+nativeRepo.bind_depend_annotation = "com.enjoycar.android:bind_depned_annotation:1.0.0"
+deps.nativeRepo = nativeRepo
 
 ext.deps = deps
 
 def addRepos(RepositoryHandler handler) {
     handler.google()
-    handler.jcenter()
+    handler.maven { url 'https://maven.aliyun.com/repository/central/' }
+    handler.maven { url 'https://maven.aliyun.com/repository/google/' }
+    handler.maven { url 'https://maven.aliyun.com/repository/gradle-plugin/' }
+    handler.maven { url 'https://maven.aliyun.com/repository/jcenter/' }
+    handler.maven { url 'https://maven.aliyun.com/repository/public/' }
+    handler.maven { url 'https://dl.bintray.com/umsdk/release' }
     handler.mavenCentral()
     handler.maven { url uri('./local_repo') }
     handler.maven { url "https://jitpack.io" }
+    handler.jcenter()
+    handler.maven { url 'https://dl.bintray.com/umsdk/release/' }
+    handler.maven { url "http://47.107.163.215:8082/repository/maven-public/" }
     handler.flatDir {
         dirs '../componentrelease' //this way we can find the .aar file in  folder
+        dirs "../basiclib/libs"
     }
 }
 
